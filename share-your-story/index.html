@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Share Your Story — The Open Door</title>
+  <meta name="description" content="Tell us how God changed your life. Low-friction, in your own words, on your own time.">
+  <link rel="canonical" href="https://opendoormedia.us/share-your-story/">
+  <link rel="icon" href="/favicon.ico">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://opendoormedia.us/share-your-story/">
+  <meta property="og:title" content="Share Your Story — The Open Door">
+  <meta property="og:description" content="Tell us how God changed your life. In your own words, on your own time. Your story could be published on The Open Door — an original project from Open Door Media.">
+  <meta property="og:image" content="https://opendoormedia.us/img/og-image.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Share Your Story — The Open Door">
+  <meta name="twitter:description" content="Tell us how God changed your life. In your own words, on your own time. Your story could be published on The Open Door — an original project from Open Door Media.">
+  <meta name="twitter:image" content="https://opendoormedia.us/img/og-image.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>@view-transition { navigation: auto; }</style>
+  <style>
+    .hub-story-form {
+      position: relative;
+      z-index: 1;
+      min-height: calc(100vh - 66px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--sp-10) var(--sp-5) var(--sp-12);
+    }
+
+    .hub-story-form__inner {
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .hub-story-form__header {
+      text-align: center;
+      margin-bottom: var(--sp-5);
+    }
+
+    .hub-story-form__header .eyebrow {
+      color: var(--accent);
+      letter-spacing: 3px;
+      margin-bottom: 16px;
+    }
+
+    .hub-story-form__header h1 {
+      color: var(--hub-hi);
+      font-size: clamp(30px, 4vw, 46px);
+      margin-bottom: 14px;
+      line-height: 1.08;
+    }
+
+    .hub-story-form__header p {
+      color: var(--hub-mid);
+      font-size: 16px;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* Glass card overrides — dark hub theme */
+    .hub-page .contact-chat__window {
+      background: rgba(197,88,51,.05);
+      border: 1px solid var(--hub-border);
+      backdrop-filter: blur(8px);
+    }
+
+    .hub-page .faq-bubble-received {
+      background: rgba(197,88,51,.08);
+      color: var(--hub-hi);
+      border-color: var(--hub-border);
+    }
+
+    .hub-page .contact-chat__input-zone {
+      background: rgba(197,88,51,.05);
+      border: 1px solid var(--hub-border);
+      backdrop-filter: blur(8px);
+    }
+
+    .hub-page .contact-input {
+      background: rgba(15,9,4,.6);
+      border-color: var(--hub-border);
+      color: var(--hub-hi);
+    }
+
+    .hub-page .contact-input::placeholder { color: var(--hub-lo); }
+    .hub-page .contact-input:focus        { border-color: var(--accent); outline: none; }
+
+    .hub-page .contact-textarea {
+      background: rgba(15,9,4,.6);
+      border-color: var(--hub-border);
+      color: var(--hub-hi);
+    }
+
+    .hub-page .contact-textarea::placeholder { color: var(--hub-lo); }
+    .hub-page .contact-textarea:focus        { border-color: var(--accent); }
+
+    .hub-page .contact-chip {
+      background: rgba(197,88,51,.06);
+      border-color: var(--hub-border);
+      color: var(--hub-mid);
+    }
+
+    .hub-page .contact-chip:hover      { border-color: var(--accent); color: var(--hub-hi); }
+    .hub-page .contact-chip.is-selected { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+
+    .hub-page .contact-skip-btn       { color: var(--hub-lo); }
+    .hub-page .contact-skip-btn:hover { color: var(--hub-hi); }
+
+    .hub-page .faq-dot { background: var(--hub-lo); }
+
+    .hub-story-form__back {
+      text-align: center;
+      margin-top: var(--sp-4);
+    }
+
+    .hub-story-form__learn {
+      text-align: center;
+      margin-top: 18px;
+    }
+
+    .hub-learn-link {
+      font-size: 10px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .hub-learn-link:hover { color: var(--hub-hi); }
+
+    /* Process section */
+    .hub-process {
+      position: relative;
+      z-index: 1;
+      padding: var(--sp-12) var(--sp-5);
+      border-top: 1px solid var(--hub-border);
+    }
+
+    .hub-process__inner {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hub-process__inner .eyebrow {
+      color: var(--accent);
+      letter-spacing: 3px;
+      margin-bottom: 16px;
+    }
+
+    .hub-process__inner h2 {
+      color: var(--hub-hi);
+      font-size: clamp(24px, 3vw, 36px);
+      margin-bottom: 14px;
+    }
+
+    .hub-process__inner > p {
+      color: var(--hub-mid);
+      font-size: 16px;
+      max-width: 540px;
+      margin: 0 auto var(--sp-8);
+    }
+
+    .hub-process__cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      text-align: left;
+    }
+
+    .hub-process__card {
+      background: rgba(197,88,51,.05);
+      border: 1px solid var(--hub-border);
+      border-radius: 14px 14px 3px 14px;
+      padding: 24px 22px;
+    }
+
+    .hub-process__card-num {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+
+    .hub-process__card h4 {
+      color: var(--hub-hi);
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .hub-process__card p {
+      color: var(--hub-mid);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .hub-process__note {
+      margin-top: var(--sp-6);
+      color: var(--hub-lo);
+      font-size: 13px;
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .hub-story-form__mobile-label { display: none; }
+
+    /* ── Mobile: full-screen native chat ──
+       Natural block layout (no position:fixed, no overflow:hidden on body)
+       so iOS handles keyboard scroll natively. dvh recalculates on
+       Android/Chrome when keyboard opens. 60px = hub-nav mobile height. */
+    @media (max-width: 600px) {
+      .hub-process { padding: var(--sp-8) var(--sp-3); }
+      .hub-process__inner h2 { font-size: 22px; }
+      .hub-process__inner > p { font-size: 15px; }
+      .hub-process__cards { grid-template-columns: 1fr; }
+      .hub-process__card h4 { font-size: 16px; }
+      .hub-process__card p  { font-size: 15px; }
+
+      .hub-why { padding: var(--sp-8) var(--sp-3); }
+      .hub-why__inner h2 { font-size: 22px; }
+      .hub-why__reason h4 { font-size: 16px; }
+      .hub-why__reason p  { font-size: 15px; }
+
+      .hub-story-form {
+        height: calc(100dvh - 60px);
+        min-height: unset;
+        align-items: stretch;
+        justify-content: flex-start;
+        padding: 0;
+        overflow: hidden;
+        z-index: 2;
+      }
+
+      .hub-story-form__inner {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        max-width: 100%;
+        padding: 0;
+      }
+
+      /* Header copy hidden — the first chat prompt sets the tone */
+      .hub-story-form__header { display: none; }
+
+      .hub-story-form__mobile-label {
+        display: block;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 16px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 6px;
+      }
+
+      /* Anchor links slot in above the chat window (order swapped via flex order) */
+      .hub-story-form__learn {
+        flex-shrink: 0;
+        order: 1;
+        margin-top: 0;
+        padding: 10px 16px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        background: rgba(15, 9, 4, 0.3);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        border-top: 1px solid var(--hub-border);
+        border-bottom: 1px solid var(--hub-border);
+      }
+
+      .hub-learn-link {
+        display: block;
+        font-size: 11px;
+      }
+
+      /* Chat window fills remaining space — edge-to-edge, no card border */
+      .hub-story-form .contact-chat__window {
+        flex: 1;
+        min-height: 0;
+        max-height: none;
+        order: 2;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        margin-bottom: 0;
+        padding: 16px;
+        overflow-y: scroll;
+        overscroll-behavior-y: contain;
+      }
+
+      /* Input bar anchors to bottom — top rule only, no card */
+      .hub-story-form .contact-chat__input-zone {
+        flex-shrink: 0;
+        order: 3;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+        border-top: 1px solid var(--hub-border);
+        padding: 16px;
+        margin-bottom: max(12px, env(safe-area-inset-bottom));
+      }
+    }
+
+    /* Why share section */
+    .hub-why {
+      position: relative;
+      z-index: 1;
+      padding: var(--sp-12) var(--sp-5);
+      border-top: 1px solid var(--hub-border);
+    }
+
+    .hub-why__inner {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hub-why__inner .eyebrow {
+      color: var(--accent);
+      letter-spacing: 3px;
+      margin-bottom: 16px;
+    }
+
+    .hub-why__inner h2 {
+      color: var(--hub-hi);
+      font-size: clamp(24px, 3vw, 36px);
+      margin-bottom: var(--sp-8);
+    }
+
+    .hub-why__reasons {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .hub-why__reason {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .hub-why__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(197,88,51,.12);
+      border: 1px solid var(--hub-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .hub-why__reason h4 {
+      color: var(--hub-hi);
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .hub-why__reason p {
+      color: var(--hub-mid);
+      font-size: 15px;
+      line-height: 1.65;
+      margin: 0;
+    }
+  </style>
+</head>
+<body class="hub-page page--story-form">
+
+  <!-- Lantern ambient layers — fixed, behind all page content -->
+  <div class="hub-lantern-layer" style="position:fixed; left:-60px; bottom:-80px; width:430px; height:430px; border-radius:50%; background:radial-gradient(closest-side, rgba(240,150,66,.28), rgba(207,90,40,.09), transparent 72%); filter:blur(16px); animation:odm-flicker 3.4s ease-in-out infinite; z-index:0; pointer-events:none;" aria-hidden="true"></div>
+  <div style="position:fixed; inset:0; box-shadow:inset 0 0 170px 50px rgba(0,0,0,.62); pointer-events:none; z-index:0;" aria-hidden="true"></div>
+  <div class="hub-lantern-layer" style="position:fixed; left:13%; bottom:24%; width:3px; height:3px; border-radius:50%; background:#f2a85a; box-shadow:0 0 8px 2px rgba(242,168,90,.6); animation:odm-drift 9s ease-in-out infinite; z-index:0; pointer-events:none;" aria-hidden="true"></div>
+  <div class="hub-lantern-layer" style="position:fixed; left:21%; bottom:40%; width:2px; height:2px; border-radius:50%; background:#f2a85a; box-shadow:0 0 6px 2px rgba(242,168,90,.5); animation:odm-drift 12s ease-in-out 1.4s infinite; z-index:0; pointer-events:none;" aria-hidden="true"></div>
+
+  <!-- ===== NAV ===== -->
+  <nav class="hub-nav" aria-label="The Open Door navigation">
+    <div class="hub-nav__brand">
+      <a href="/the-open-door/" class="hub-nav__logo">
+        <img src="/img/odm-logos/the-open-door.svg" alt="The Open Door">
+      </a>
+      <a href="/" class="hub-nav__return">← Return to Open Door Media</a>
+    </div>
+    <ul class="hub-nav__links">
+      <li><a href="/the-open-door/stories.html">Stories</a></li>
+      <li><a href="/share-your-story/" aria-current="page">Share Your Story</a></li>
+      <li><span class="link-soon" aria-label="The Docudrama — coming soon">The Docudrama (coming soon)</span></li>
+    </ul>
+    <button id="hub-nav-toggle" class="hub-nav__toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="hub-nav__mobile-panel">
+      <a href="/" class="hub-nav__mobile-return">← Return to Open Door Media</a>
+      <a href="/the-open-door/stories.html">Stories</a>
+      <a href="/share-your-story/" aria-current="page">Share Your Story</a>
+      <span class="link-soon">The Docudrama (coming soon)</span>
+    </div>
+  </nav>
+
+  <main>
+
+    <section class="hub-story-form">
+      <div class="hub-story-form__inner">
+
+        <div class="hub-story-form__header">
+          <h1>Something happened. <br><span class="accent-word">Tell us about it.</span></h1>
+          <p>Low-friction, in your own words, on your own time. No account needed.</p>
+        </div>
+
+        <div class="contact-chat__window" id="story-window" role="log" aria-label="Conversation" aria-live="polite">
+          <div class="contact-chat__messages" id="story-messages"></div>
+        </div>
+
+        <div class="contact-chat__input-zone" id="story-input-zone" aria-live="polite"></div>
+
+        <form id="story-form" action="https://formspree.io/f/mzdlgvpj" method="POST" aria-hidden="true" style="display:none">
+          <input type="hidden" name="_subject" value="New story submission — The Open Door">
+          <input type="hidden" id="sf-name"    name="name">
+          <input type="hidden" id="sf-email"   name="email">
+          <input type="hidden" id="sf-story"   name="story">
+          <input type="hidden" id="sf-contact" name="contact_preference">
+          <input type="hidden" id="sf-publish" name="publish_permission">
+        </form>
+
+        <div class="hub-story-form__learn">
+          <span class="hub-story-form__mobile-label">Share Your Story</span>
+          <a href="#how-it-works" class="hub-learn-link">↓ What do we do with your story?</a>
+          <a href="#why-share" class="hub-learn-link" style="display:block;margin-top:10px;">↓ Why should you share your story?</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== HOW IT WORKS ===== -->
+    <section class="hub-process" id="how-it-works">
+      <div class="hub-process__inner">
+        <h2>Your story is handled with care</h2>
+        <p>We take what you share seriously. Here is exactly what happens after you hit send.</p>
+        <div class="hub-process__cards">
+          <div class="hub-process__card">
+            <div class="hub-process__card-num">01</div>
+            <h4>It comes to us privately</h4>
+            <p>Your submission goes directly to the Open Door Media team. No one else sees it.</p>
+          </div>
+          <div class="hub-process__card">
+            <div class="hub-process__card-num">02</div>
+            <h4>We read it with care</h4>
+            <p>Every story gets read by a real person. We are not feeding anything into AI or automation.</p>
+          </div>
+          <div class="hub-process__card">
+            <div class="hub-process__card-num">03</div>
+            <h4>We only publish with permission</h4>
+            <p>The form asks directly. If you say no, your story stays private. Full stop.</p>
+          </div>
+          <div class="hub-process__card">
+            <div class="hub-process__card-num">04</div>
+            <h4>We may reach out</h4>
+            <p>If the story calls for a deeper interview or feature, we will ask first. You are never obligated.</p>
+          </div>
+        </div>
+        <div class="hub-process__note">
+          Your email is used only to follow up if you said that is okay. We do not send newsletters, share your contact with anyone, or add you to any list.
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== WHY SHARE ===== -->
+    <section class="hub-why" id="why-share">
+      <div class="hub-why__inner">
+        <h2>Someone needs to hear your story.</h2>
+        <div class="hub-why__reasons">
+          <div class="hub-why__reason">
+            <div class="hub-why__icon">✦</div>
+            <div>
+              <h4>Someone else needs to hear it</h4>
+              <p>Your story is not just yours. The thing God brought you through is the exact thing someone else is still in the middle of. Hearing that someone made it in their own words, with their own doubt and mess, can be the thing that keeps them holding on.</p>
+            </div>
+          </div>
+          <div class="hub-why__reason">
+            <div class="hub-why__icon">✦</div>
+            <div>
+              <h4>It does not have to be dramatic</h4>
+              <p>You do not need a before-and-after that would make a movie. Quiet faithfulness counts. A small moment where God showed up counts. If it mattered to you, it will matter to someone.</p>
+            </div>
+          </div>
+          <div class="hub-why__reason">
+            <div class="hub-why__icon">✦</div>
+            <div>
+              <h4>Saying it out loud does something</h4>
+              <p>There is something that happens when you put what God did into words. It becomes more real. More yours. Testimony is not just for the listener. It anchors the teller too.</p>
+            </div>
+          </div>
+          <div class="hub-why__reason">
+            <div class="hub-why__icon">✦</div>
+            <div>
+              <h4>You are in control of what gets shared</h4>
+              <p>You decide whether your story is published or stays private. You decide how much to share and what name to use. There is no pressure to be more public than you are comfortable with.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="hub-footer">
+    <div class="hub-footer__inner">
+      <a href="/the-open-door/" class="hub-footer__logo">
+        <img src="/img/odm-logos/the-open-door.svg" alt="The Open Door">
+      </a>
+      <ul class="hub-footer__links">
+        <li><a href="/the-open-door/stories.html">Stories</a></li>
+        <li><a href="/share-your-story/">Share Your Story</a></li>
+        <li><a href="/">Open Door Media</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+
+  <script>
+  (function () {
+
+    var formData = { name: '', email: '', story: '', contact: '', publish: '' };
+
+    var steps = [
+      {
+        key:  'name_email',
+        type: 'name-email',
+        prompt: function () { return "Welcome. What's your name and email?"; }
+      },
+      {
+        key:         'story',
+        type:        'textarea',
+        prompt:      function () { return 'Good to meet you, ' + firstName() + '. Tell us what happened. In your own words, however much you want to share. Some share a couple sentences, others share a couple pages.'; },
+        placeholder: 'Whatever God put on your heart…',
+        required:    true,
+        validate:    function (v) { return v.trim().length > 0; },
+        error:       "We'd love to hear it. Even just a sentence or two is enough."
+      },
+      {
+        key:     'contact',
+        type:    'chips-single',
+        prompt:  function () { return "Thank you for sharing that. Can we reach out if we'd like to learn more?"; },
+        options: ['Yes, reach out', 'Just share it', 'Keep me anonymous']
+      },
+      {
+        key:     'publish',
+        type:    'chips-single',
+        prompt:  function () { return 'One last thing... do we have your permission to publish your story on our website?'; },
+        options: ['Yes, publish it', 'No']
+      }
+    ];
+
+    var currentStep = 0;
+    var win       = document.getElementById('story-window');
+    var msgs      = document.getElementById('story-messages');
+    var inputZone = document.getElementById('story-input-zone');
+
+    function firstName() { return formData.name.trim().split(' ')[0]; }
+
+    function el(tag, cls, txt) {
+      var e = document.createElement(tag);
+      if (cls) e.className = cls;
+      if (txt !== undefined) e.textContent = txt;
+      return e;
+    }
+
+    function scrollDown() { win.scrollTop = win.scrollHeight; }
+
+    function lockInput() {
+      inputZone.style.opacity       = '0.5';
+      inputZone.style.pointerEvents = 'none';
+    }
+
+    function unlockInput() {
+      inputZone.style.opacity       = '';
+      inputZone.style.pointerEvents = '';
+    }
+
+    function showPrompt(text, cb) {
+      var typingRow  = el('div', 'faq-msg-received');
+      var typingDots = el('div', 'faq-typing');
+      typingDots.appendChild(el('div', 'faq-dot'));
+      typingDots.appendChild(el('div', 'faq-dot'));
+      typingDots.appendChild(el('div', 'faq-dot'));
+      typingRow.appendChild(typingDots);
+      msgs.appendChild(typingRow);
+      scrollDown();
+
+      setTimeout(function () {
+        typingRow.remove();
+        var row = el('div', 'faq-msg-received');
+        row.appendChild(el('div', 'faq-bubble-received', text));
+        msgs.appendChild(row);
+        scrollDown();
+        if (cb) cb();
+      }, 650);
+    }
+
+    function showAnswer(text) {
+      var row = el('div', 'faq-msg-sent');
+      row.appendChild(el('div', 'faq-bubble-sent', text));
+      msgs.appendChild(row);
+      scrollDown();
+    }
+
+    function showError(text, refocusEl) {
+      lockInput();
+      var errRow = el('div', 'faq-msg-received');
+      errRow.appendChild(el('div', 'faq-bubble-received', text));
+      msgs.appendChild(errRow);
+      scrollDown();
+      setTimeout(function () {
+        unlockInput();
+        if (refocusEl) { refocusEl.focus(); refocusEl.select(); }
+      }, 800);
+    }
+
+    function renderNameEmail() {
+      var nameInput          = document.createElement('input');
+      nameInput.type         = 'text';
+      nameInput.className    = 'contact-input';
+      nameInput.placeholder  = 'Your name';
+      nameInput.autocomplete = 'name';
+      nameInput.style.width  = '100%';
+      nameInput.style.marginBottom = '8px';
+
+      var emailRow   = el('div', 'contact-input-row');
+      var emailInput = document.createElement('input');
+      emailInput.type        = 'email';
+      emailInput.className   = 'contact-input';
+      emailInput.placeholder = 'you@example.com';
+      emailInput.autocomplete = 'email';
+
+      var sendBtn = el('button', 'contact-send-btn', '→');
+      sendBtn.type = 'button';
+      sendBtn.setAttribute('aria-label', 'Send');
+
+      emailRow.appendChild(emailInput);
+      emailRow.appendChild(sendBtn);
+      inputZone.appendChild(nameInput);
+      inputZone.appendChild(emailRow);
+
+      function attempt() {
+        var name  = nameInput.value.trim();
+        var email = emailInput.value.trim();
+        if (!name) {
+          showError("I didn't catch your name — what should I call you?", nameInput);
+          return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showError("That email doesn't look quite right — could you double-check it?", emailInput);
+          return;
+        }
+        formData.name  = name;
+        formData.email = email;
+        showAnswer(name + ' · ' + email);
+        advanceStep();
+      }
+
+      sendBtn.addEventListener('click', attempt);
+      nameInput.addEventListener('keydown',  function (e) { if (e.key === 'Enter') emailInput.focus(); });
+      emailInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') attempt(); });
+      setTimeout(function () { nameInput.focus(); }, 80);
+    }
+
+    function renderTextarea(step) {
+      var ta         = document.createElement('textarea');
+      ta.className   = 'contact-textarea';
+      ta.placeholder = step.placeholder || '';
+      ta.rows        = 5;
+
+      var footer  = el('div', 'contact-textarea-footer');
+      var sendBtn = el('button', 'contact-send-btn contact-send-btn--wide', 'Send →');
+      sendBtn.type = 'button';
+      footer.appendChild(sendBtn);
+
+      inputZone.appendChild(ta);
+      inputZone.appendChild(footer);
+
+      sendBtn.addEventListener('click', function () {
+        var val = ta.value.trim();
+        if (step.required && step.validate && !step.validate(val)) {
+          var errRow = el('div', 'faq-msg-received');
+          errRow.appendChild(el('div', 'faq-bubble-received', step.error));
+          msgs.appendChild(errRow);
+          scrollDown();
+          ta.focus();
+          return;
+        }
+        formData[step.key] = val;
+        showAnswer(val);
+        advanceStep();
+      });
+
+      setTimeout(function () { ta.focus(); }, 80);
+    }
+
+    function renderChipsSingle(step) {
+      var chipsWrap = el('div', 'contact-chips');
+
+      step.options.forEach(function (opt) {
+        var chip = el('button', 'contact-chip', opt);
+        chip.type = 'button';
+        chip.addEventListener('click', function () {
+          lockInput();
+          chip.classList.add('is-selected');
+          formData[step.key] = opt;
+          showAnswer(opt);
+          setTimeout(advanceStep, 200);
+        });
+        chipsWrap.appendChild(chip);
+      });
+
+      inputZone.appendChild(chipsWrap);
+    }
+
+    function renderInputZone(step) {
+      inputZone.innerHTML = '';
+      unlockInput();
+      if      (step.type === 'name-email')   renderNameEmail();
+      else if (step.type === 'textarea')     renderTextarea(step);
+      else if (step.type === 'chips-single') renderChipsSingle(step);
+    }
+
+    function advanceStep() {
+      inputZone.innerHTML = '';
+      currentStep++;
+
+      if (currentStep < steps.length) {
+        var step = steps[currentStep];
+        setTimeout(function () {
+          showPrompt(step.prompt(), function () { renderInputZone(step); });
+        }, 150);
+      } else {
+        submitForm();
+      }
+    }
+
+    function submitForm() {
+      document.getElementById('sf-name').value    = formData.name;
+      document.getElementById('sf-email').value   = formData.email;
+      document.getElementById('sf-story').value   = formData.story;
+      document.getElementById('sf-contact').value = formData.contact;
+      document.getElementById('sf-publish').value = formData.publish;
+
+      var form   = document.getElementById('story-form');
+      var action = form.getAttribute('action');
+
+      if (!action || action.indexOf('YOUR_STORY_FORM_ID') !== -1) {
+        setTimeout(function () {
+          showPrompt('Thank you, ' + firstName() + '. Your story is in good hands.', null);
+        }, 150);
+        return;
+      }
+
+      // Fire-and-forget to Cloudflare Pages function — creates a draft in GitHub
+      fetch('/submit-story', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({
+          name:    formData.name,
+          email:   formData.email,
+          story:   formData.story,
+          contact: formData.contact,
+          publish: formData.publish,
+        }),
+      }).catch(function () { /* silent — doesn't affect the user */ });
+
+      fetch(action, {
+        method:  'POST',
+        headers: { 'Accept': 'application/json' },
+        body:    new FormData(form)
+      }).then(function (res) {
+        var msg = res.ok
+          ? 'Thank you, ' + firstName() + '. Your story is in good hands.'
+          : 'Something went wrong on our end. You can email us directly at connect@opendoormedia.us.';
+        showPrompt(msg, null);
+      }).catch(function () {
+        showPrompt('Looks like a network issue. Feel free to email us at connect@opendoormedia.us.', null);
+      });
+    }
+
+    setTimeout(function () {
+      showPrompt(steps[0].prompt(), function () { renderInputZone(steps[0]); });
+    }, 300);
+
+  })();
+  </script>
+
+
+</body>
+</html>

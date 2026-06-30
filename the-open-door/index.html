@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Open Door — Stories of the Overlooked</title>
+  <meta name="description" content="Christian journalism from Open Door Media. Real people sharing how God changed their lives — told in their own words.">
+  <link rel="canonical" href="https://opendoormedia.us/the-open-door/">
+  <link rel="icon" href="/favicon.ico">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://opendoormedia.us/the-open-door/">
+  <meta property="og:title" content="The Open Door — Stories of the Overlooked">
+  <meta property="og:description" content="Real people sharing how God changed their lives. An original storytelling project from Open Door Media in Wichita, KS — giving voice to overlooked experiences.">
+  <meta property="og:image" content="https://opendoormedia.us/img/og-image.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Open Door — Stories of the Overlooked">
+  <meta name="twitter:description" content="Real people sharing how God changed their lives. An original storytelling project from Open Door Media in Wichita, KS — giving voice to overlooked experiences.">
+  <meta name="twitter:image" content="https://opendoormedia.us/img/og-image.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://opendoormedia.us/" },
+          { "@type": "ListItem", "position": 2, "name": "The Open Door", "item": "https://opendoormedia.us/the-open-door/" }
+        ]
+      },
+      {
+        "@type": "WebPage",
+        "name": "The Open Door — Stories of the Overlooked",
+        "description": "Real people sharing how God changed their lives. An original storytelling project from Open Door Media in Wichita, KS — giving voice to overlooked experiences.",
+        "url": "https://opendoormedia.us/the-open-door/",
+        "publisher": {
+          "@type": "Organization",
+          "name": "Open Door Media",
+          "url": "https://opendoormedia.us"
+        }
+      }
+    ]
+  }
+  </script>
+
+  <style>@view-transition { navigation: auto; }</style>
+  <script>
+    // Runs before first paint — catches pagereveal for the enter-from-about trip
+    window.addEventListener('pagereveal', function (e) {
+      if (!e.viewTransition) return;
+      try {
+        if (!window.navigation.activation.from.url.includes('/about')) return;
+      } catch (_) { return; }
+
+      // Retrieve the door arch bounding rect captured just before navigation
+      var stored = sessionStorage.getItem('vt-door');
+      sessionStorage.removeItem('vt-door');
+
+      // Default: small oval at center of viewport (fallback if no stored rect)
+      var fromClip = 'inset(35% 38% 35% 38% round 50%)';
+      if (stored) {
+        var p = JSON.parse(stored);
+        fromClip = 'inset(' + p.t + 'px ' + p.r + 'px ' + p.b + 'px ' + p.l + 'px ' +
+                   'round ' + p.rad + 'px ' + p.rad + 'px 0 0)';
+      }
+
+      var s = document.createElement('style');
+      s.textContent =
+        '@keyframes vt-door-reveal{' +
+          'from{clip-path:' + fromClip + ';opacity:0}' +
+          'to{clip-path:inset(0% round 0%);opacity:1}' +
+        '}' +
+        '::view-transition-old(root){animation:vt-push-out .85s cubic-bezier(.5,0,.2,1) both}' +
+        '::view-transition-new(root){animation:vt-door-reveal 1.1s cubic-bezier(.33,0,.12,1) both}';
+      document.head.appendChild(s);
+    });
+  </script>
+</head>
+<body class="hub-page">
+
+  <!-- Lantern ambient layers — fixed, behind all page content -->
+  <div class="hub-lantern-layer" style="position:fixed; left:-60px; bottom:-80px; width:430px; height:430px; border-radius:50%; background:radial-gradient(closest-side, rgba(240,150,66,.28), rgba(207,90,40,.09), transparent 72%); filter:blur(16px); animation:odm-flicker 3.4s ease-in-out infinite; z-index:0; pointer-events:none;" aria-hidden="true"></div>
+  <div style="position:fixed; inset:0; box-shadow:inset 0 0 170px 50px rgba(0,0,0,.62); pointer-events:none; z-index:0;" aria-hidden="true"></div>
+  <div class="hub-lantern-layer" style="position:fixed; left:13%; bottom:24%; width:3px; height:3px; border-radius:50%; background:#f2a85a; box-shadow:0 0 8px 2px rgba(242,168,90,.6); animation:odm-drift 9s ease-in-out infinite; z-index:0; pointer-events:none;" aria-hidden="true"></div>
+  <div class="hub-lantern-layer" style="position:fixed; left:21%; bottom:40%; width:2px; height:2px; border-radius:50%; background:#f2a85a; box-shadow:0 0 6px 2px rgba(242,168,90,.5); animation:odm-drift 12s ease-in-out 1.4s infinite; z-index:0; pointer-events:none;" aria-hidden="true"></div>
+
+  <!-- ===== NAV ===== -->
+  <nav class="hub-nav" aria-label="The Open Door navigation">
+    <div class="hub-nav__brand">
+      <a href="/the-open-door/" class="hub-nav__logo">
+        <img src="/img/odm-logos/the-open-door.svg" alt="The Open Door">
+      </a>
+      <a href="/" class="hub-nav__return">← Return to Open Door Media</a>
+    </div>
+    <ul class="hub-nav__links">
+      <li><a href="/the-open-door/stories.html">Stories</a></li>
+      <li><a href="/share-your-story/">Share Your Story</a></li>
+      <li><span class="link-soon" aria-label="The Docudrama — coming soon">The Docudrama (coming soon)</span></li>
+    </ul>
+    <button id="hub-nav-toggle" class="hub-nav__toggle" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="hub-nav__mobile-panel">
+      <a href="/" class="hub-nav__mobile-return">← Return to Open Door Media</a>
+      <a href="/the-open-door/stories.html">Stories</a>
+      <a href="/share-your-story/">Share Your Story</a>
+      <span class="link-soon">The Docudrama (coming soon)</span>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ===== HERO ===== -->
+    <section class="hub-hero" id="overview">
+      <div class="hub-hero__content">
+        <h1>Stories of the overlooked. Told in <br><span class="accent-word">their own words.</span></h1>
+        <p>Real people sharing how God changed their lives. Sometimes we follow the thread into a feature, an interview, or something bigger.</p>
+        <div class="hub-hero__actions">
+          <a href="/share-your-story/" class="btn btn--primary btn--lg">Share your story →</a>
+          <a href="/the-open-door/stories.html" class="hub-back-btn">Read the stories</a>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===== HOW A STORY TRAVELS ===== -->
+    <section class="hub-section">
+      <h2>How a story travels</h2>
+      <div class="hub-steps">
+        <div class="hub-step">
+          <div class="hub-step__num">01</div>
+          <h4>Someone shares</h4>
+          <p>Via the Share Your Story form, in their own words, on their own time.</p>
+        </div>
+        <div class="hub-step">
+          <div class="hub-step__num">02</div>
+          <h4>It joins the library</h4>
+          <p>Published in their own voice. Simple, honest, unedited for authenticity.</p>
+        </div>
+        <div class="hub-step">
+          <div class="hub-step__num">03</div>
+          <h4>We may reach out</h4>
+          <p>For a deeper interview, as our team feels led.</p>
+        </div>
+        <div class="hub-step">
+          <div class="hub-step__num">04</div>
+          <h4>It can become more</h4>
+          <p>A feature, publication, docudrama, or something we haven't named yet.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== THE DOCUDRAMA ===== -->
+    <div class="hub-docudrama" id="docudrama">
+      <div class="hub-docudrama__inner">
+        <span class="hub-docudrama__badge">Pilot · In Development</span>
+        <h3>Docudrama Series</h3>
+        <p>A pilot built from one true testimony; trafficking, addiction, jail, and renewal on the other side. Created in partnership with Hub of Hope NWA to spread awareness for human trafficking.</p>
+      </div>
+      <div class="hub-docudrama__invite">
+        <p class="hub-docudrama__invite-lead">Your story could change someone's life.</p>
+        <p>We're looking for real people willing to share honestly. It doesn't have to be polished. Just true.</p>
+        <a href="/share-your-story/" class="btn btn--primary btn--sm">Share Your Story →</a>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="hub-footer">
+    <div class="hub-footer__inner">
+      <a href="/the-open-door/" class="hub-footer__logo">
+        <img src="/img/odm-logos/the-open-door.svg" alt="The Open Door">
+      </a>
+      <ul class="hub-footer__links">
+        <li><a href="/the-open-door/stories.html">Stories</a></li>
+        <li><a href="/share-your-story/">Share Your Story</a></li>
+        <li><a href="/">Open Door Media</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
