@@ -1,9 +1,9 @@
 ---
 title: Test
 author: Lucas Carlson
-date: 2026-07-23
+date: 2026-07-20
 tagline: Test
-published: true
+published: false
 ---
 
 This is my sample story….
