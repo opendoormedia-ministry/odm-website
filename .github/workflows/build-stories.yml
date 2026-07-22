@@ -1,0 +1,28 @@
+name: Build Stories
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'the-open-door/posts/**.md'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build and publish stories
+        run: node build-stories.js
