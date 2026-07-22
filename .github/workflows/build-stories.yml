@@ -30,6 +30,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "Nothing to commit."
           else
-            git commit -m "stories: rebuild HTML pages [skip ci]"
+            git commit -m "stories: rebuild HTML pages"
             git push
           fi
