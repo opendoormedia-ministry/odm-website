@@ -15,14 +15,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Configure git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Build and publish stories
+      - name: Build story pages
         run: node build-stories.js
+
+      - name: Commit and push generated pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add the-open-door/stories the-open-door/stories.html
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            git commit -m "stories: rebuild HTML pages [skip ci]"
+            git push
+          fi

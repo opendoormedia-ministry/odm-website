@@ -1,7 +1,8 @@
 'use strict';
 
-const fs   = require('fs');
-const path = require('path');
+const fs            = require('fs');
+const path          = require('path');
+const { execSync }  = require('child_process');
 
 const ROOT       = __dirname;
 const POSTS_DIR  = path.join(ROOT, 'the-open-door', 'posts');
@@ -343,3 +344,26 @@ for (const post of posts) {
 
 fs.writeFileSync(INDEX_FILE, storiesIndexHtml(posts), 'utf8');
 console.log(`  ✓  stories.html  (${posts.length} post${posts.length !== 1 ? 's' : ''})`);
+
+// ── Push to GitHub (local only — CI handles its own git operations) ───────────
+
+if (!process.env.CI) {
+  const git = cmd => execSync(cmd, { cwd: ROOT, stdio: 'pipe' }).toString().trim();
+
+  try {
+    git('git add the-open-door/posts the-open-door/stories the-open-door/stories.html');
+
+    const status = git('git status --porcelain');
+    if (!status) {
+      console.log('\n  –  nothing to commit, already up to date.');
+    } else {
+      const titles = posts.map(p => p.meta.title || p.slug).join(', ');
+      git(`git commit -m "stories: publish ${titles}"`);
+      git('git push');
+      console.log('  ✓  pushed to GitHub');
+    }
+  } catch (err) {
+    console.error('\n  ✗  git push failed:', err.message);
+    process.exit(1);
+  }
+}
