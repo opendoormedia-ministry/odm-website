@@ -3,7 +3,7 @@ title: Getting Your PayPal Donation Details for Your Website
 author: Open Door Media
 date: 2026-07-24
 category: PayPal
-published: false
+published: true
 ---
 
 To set up online donations on your website, I need one small piece of information from your PayPal account. It's called a **Client ID** — think of it like a name tag PayPal uses to recognize your organization's account. It is **not** your password, and you will never need to share your password with me.
