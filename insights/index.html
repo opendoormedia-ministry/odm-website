@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Insights — Open Door Media</title>
+  <meta name="description" content="Guides and resources for our clients — from setting up GitHub and Cloudflare to tips on nonprofit marketing and better websites.">
+  <link rel="canonical" href="https://opendoormedia.us/insights/">
+  <link rel="icon" href="/favicon.ico">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://opendoormedia.us/insights/">
+  <meta property="og:title" content="Insights — Open Door Media">
+  <meta property="og:description" content="Guides and resources for our clients — from setting up GitHub and Cloudflare to tips on nonprofit marketing and better websites.">
+  <meta property="og:image" content="https://opendoormedia.us/img/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Insights — Open Door Media">
+  <meta name="twitter:description" content="Guides and resources from Open Door Media.">
+  <meta name="twitter:image" content="https://opendoormedia.us/img/og-image.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .ig-header {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: 64px var(--sp-5) var(--sp-6);
+      border-bottom: 1px solid var(--hairline);
+    }
+    .ig-header h1 { margin: 8px 0 12px; }
+    .ig-header p  { max-width: 520px; }
+    .ig-filters {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      max-width: var(--max-w); margin: 0 auto;
+      padding: var(--sp-5) var(--sp-5) var(--sp-3);
+    }
+    .ig-filter {
+      background: none; border: 1px solid var(--hairline); border-radius: 99px;
+      padding: 6px 16px; font-family: 'Montserrat', sans-serif; font-size: 10px;
+      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--taupe); cursor: pointer; transition: all .2s;
+    }
+    .ig-filter:hover { border-color: var(--accent); color: var(--accent); }
+    .ig-filter.is-active { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+    .ig-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px; max-width: var(--max-w); margin: 0 auto;
+      padding: var(--sp-3) var(--sp-5) var(--sp-12);
+    }
+    .ig-card {
+      display: flex; flex-direction: column; gap: 10px;
+      border: 1px solid var(--hairline); border-radius: 16px 16px 3px 16px;
+      padding: 28px 26px; background: var(--paper);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .ig-card:hover { border-color: rgba(197,88,51,.3); box-shadow: 0 4px 18px rgba(197,88,51,.06); }
+    .ig-card.is-hidden { display: none; }
+    .ig-card__cat {
+      align-self: flex-start; border: 1px solid var(--accent); border-radius: 99px;
+      padding: 2px 10px; font-family: 'Montserrat', sans-serif;
+      font-size: 9px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--accent);
+    }
+    .ig-card__title { font-size: 20px; line-height: 1.25; color: var(--ink); margin: 0; }
+    .ig-card__meta  { font-size: 12px; color: var(--taupe); margin: 0; }
+    .ig-card__link {
+      margin-top: auto; padding-top: 14px;
+      font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--accent);
+      transition: color .2s;
+    }
+    .ig-card__link:hover { color: var(--ink); }
+    .ig-empty { grid-column: 1 / -1; text-align: center; padding: var(--sp-12) 0; color: var(--taupe); }
+    @media (max-width: 600px) {
+      .ig-header { padding: var(--sp-8) var(--sp-3) var(--sp-5); }
+      .ig-filters { padding: var(--sp-4) var(--sp-3) var(--sp-2); }
+      .ig-grid { grid-template-columns: 1fr; padding: var(--sp-3) var(--sp-3) var(--sp-8); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="site-nav" class="navbar">
+    <div class="navbar__inner">
+      <a href="/" class="navbar__logo">
+        <img src="/img/odm-logos/logo-header.svg" alt="Open Door Media">
+      </a>
+      <ul class="navbar__links">
+        <li class="navbar__item--has-dropdown">
+          <a href="/services/">Services</a>
+          <ul class="navbar__dropdown">
+            <li><a href="/services/website-design.html">Website Design</a></li>
+            <li><a href="/services/video-production.html">Video Production</a></li>
+            <li><a href="/services/digital-marketing.html">Digital Marketing</a></li>
+          </ul>
+        </li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/contact.html" class="navbar__cta">Start a project</a></li>
+      </ul>
+      <button id="nav-toggle" class="navbar__toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="navbar__mobile">
+      <a href="/services/">Services</a>
+      <a href="/services/website-design.html" class="navbar__mobile-sub">Website Design</a>
+      <a href="/services/video-production.html" class="navbar__mobile-sub">Video Production</a>
+      <a href="/services/digital-marketing.html" class="navbar__mobile-sub">Digital Marketing</a>
+      <a href="/about.html">About</a>
+      <a href="/contact.html">Contact</a>
+      <a href="/contact.html" class="btn btn--primary btn--sm">Start a project</a>
+    </div>
+  </nav>
+  <main>
+    <div class="ig-header">
+      <span class="eyebrow">Resources · Insights</span>
+      <h1>Guides &amp; resources.</h1>
+      <p>Step-by-step guides for our clients, plus tips on marketing, websites, and growing your mission online.</p>
+    </div>
+    
+    <div class="ig-grid" id="ig-grid">
+      <p class="ig-empty">No guides published yet — check back soon.</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <a href="/" class="footer__logo">
+        <img src="/img/odm-logos/logo-footer.svg" alt="Open Door Media">
+      </a>
+      <ul class="footer__links">
+        <li><a href="/services/">Services</a></li>
+        <li><a href="/about.html">About</a></li>
+        <li><a href="/contact.html">Contact</a></li>
+        <li><a href="/share-your-story/">Share Your Story</a></li>
+      </ul>
+      <address class="footer__nap">
+        <a href="tel:+13162850517">+1 316-285-0517</a>
+        <span aria-hidden="true">·</span>
+        <a href="mailto:connect@opendoormedia.us">connect@opendoormedia.us</a>
+        <span aria-hidden="true">·</span>
+        <span>Wichita, KS</span>
+        <span class="footer__copy">© 2026 Open Door Media · Proudly built in-house</span>
+      </address>
+    </div>
+  </footer>
+  <script src="/js/main.js"></script>
+  
+</body>
+</html>

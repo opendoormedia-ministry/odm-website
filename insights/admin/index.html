@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin — Insights | Open Door Media</title>
+  <link rel="icon" href="/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body { background: var(--paper); }
+
+    /* ── Header ── */
+    .ia-header {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 var(--sp-5); height: 62px;
+      background: var(--paper); border-bottom: 1px solid var(--hairline);
+    }
+    .ia-header__brand { display: flex; align-items: center; gap: 14px; }
+    .ia-header__logo  { height: 38px; width: auto; display: block; }
+    .ia-header__label {
+      font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--taupe);
+    }
+    .ia-header__label span { color: var(--accent); }
+    .ia-header__actions { display: flex; align-items: center; gap: 14px; }
+    .ia-header__back {
+      font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; color: var(--taupe); transition: color .2s;
+    }
+    .ia-header__back:hover { color: var(--accent); }
+    .ia-btn-ghost {
+      background: none; border: 1px solid var(--hairline); border-radius: 6px;
+      padding: 6px 14px; font-family: 'Montserrat', sans-serif; font-size: 10px;
+      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--taupe); cursor: pointer; transition: all .2s;
+    }
+    .ia-btn-ghost:hover { border-color: var(--taupe); color: var(--ink); }
+
+    /* ── Login ── */
+    .ia-login {
+      min-height: calc(100vh - 62px);
+      display: flex; align-items: center; justify-content: center;
+      padding: var(--sp-8) var(--sp-5);
+    }
+    .ia-login__card {
+      width: 100%; max-width: 420px;
+      background: #fff; border: 1px solid var(--hairline);
+      border-radius: 16px 16px 3px 16px; padding: 40px 36px;
+      box-shadow: 0 4px 28px rgba(0,0,0,.06);
+    }
+    .ia-login__eyebrow {
+      font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+    }
+    .ia-login__heading { font-size: 24px; color: var(--ink); margin-bottom: 28px; line-height: 1.2; }
+    .ia-field  { margin-bottom: 16px; }
+    .ia-label  {
+      display: block; font-family: 'Montserrat', sans-serif; font-size: 10px;
+      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--taupe); margin-bottom: 6px;
+    }
+    .ia-input  {
+      width: 100%; background: var(--panel); border: 1px solid var(--hairline);
+      border-radius: 8px; padding: 10px 14px; color: var(--ink);
+      font-family: 'DM Sans', sans-serif; font-size: 15px;
+      transition: border-color .2s, background .2s; box-sizing: border-box;
+    }
+    .ia-input:focus { outline: none; border-color: var(--accent); background: #fff; }
+    .ia-input::placeholder { color: var(--placeholder); }
+    .ia-login__submit {
+      width: 100%; margin-top: 8px; padding: 13px;
+      background: var(--accent); border: none; border-radius: 8px 8px 2px 8px;
+      font-family: 'Montserrat', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase; color: var(--paper);
+      cursor: pointer; transition: opacity .2s;
+    }
+    .ia-login__submit:hover { opacity: .85; }
+    .ia-login__submit:disabled { opacity: .4; cursor: not-allowed; }
+    .ia-error {
+      margin-top: 14px; padding: 10px 14px;
+      background: rgba(180,40,40,.05); border: 1px solid rgba(180,40,40,.22);
+      border-radius: 8px; font-size: 13px; color: #b02020;
+    }
+    .ia-login__note { margin-top: 20px; font-size: 12px; color: var(--taupe); line-height: 1.6; text-align: center; }
+    .ia-login__note a { color: var(--accent); }
+
+    /* ── App shell ── */
+    .ia-app {
+      max-width: 860px; margin: 0 auto;
+      padding: var(--sp-6) var(--sp-5) var(--sp-12);
+      min-height: calc(100vh - 62px);
+    }
+
+    /* ── Toolbar ── */
+    .ia-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: var(--sp-5); gap: 12px; flex-wrap: wrap;
+    }
+    .ia-tabs   { display: flex; gap: 4px; }
+    .ia-tab    {
+      background: none; border: 1px solid var(--hairline); border-radius: 99px;
+      padding: 6px 16px; font-family: 'Montserrat', sans-serif; font-size: 10px;
+      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--taupe); cursor: pointer; transition: all .2s;
+    }
+    .ia-tab:hover { border-color: var(--taupe); color: var(--ink); }
+    .ia-tab.is-active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+    .ia-new-btn {
+      background: none; border: 1px solid var(--accent); border-radius: 8px 8px 2px 8px;
+      padding: 8px 18px; font-family: 'Montserrat', sans-serif; font-size: 10px;
+      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--accent); cursor: pointer; transition: all .2s; white-space: nowrap;
+    }
+    .ia-new-btn:hover { background: var(--accent); color: var(--paper); }
+
+    /* ── Guide cards ── */
+    .ia-list   { display: flex; flex-direction: column; gap: 10px; }
+    .ia-card   {
+      display: flex; align-items: flex-start; gap: 16px;
+      background: #fff; border: 1px solid var(--hairline);
+      border-radius: 12px 12px 3px 12px; padding: 20px 22px;
+      cursor: pointer; transition: border-color .2s, box-shadow .2s;
+    }
+    .ia-card:hover { border-color: rgba(197,88,51,.3); box-shadow: 0 2px 12px rgba(197,88,51,.05); }
+    .ia-card__body { flex: 1; min-width: 0; }
+    .ia-card__meta { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap; }
+    .ia-badge  {
+      display: inline-block; padding: 2px 8px; border-radius: 99px;
+      font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+    }
+    .ia-badge--draft { background: var(--panel); color: var(--taupe); border: 1px solid var(--hairline); }
+    .ia-badge--pub   { background: rgba(30,140,60,.07); color: #1e8a3c; border: 1px solid rgba(30,140,60,.28); }
+    .ia-badge--cat   { background: rgba(197,88,51,.07); color: var(--accent); border: 1px solid rgba(197,88,51,.25); }
+    .ia-card__date   { font-size: 12px; color: var(--taupe); }
+    .ia-card__title  { color: var(--ink); font-size: 17px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ia-card__arrow  { color: var(--taupe); font-size: 18px; align-self: center; flex-shrink: 0; }
+
+    /* ── States ── */
+    .ia-loading, .ia-empty { text-align: center; padding: var(--sp-10); color: var(--taupe); }
+    .ia-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin: 0 3px; animation: ia-pulse 1s ease-in-out infinite; }
+    .ia-dot:nth-child(2) { animation-delay: .2s; }
+    .ia-dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes ia-pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+    /* ── Editor ── */
+    .ia-editor  { display: flex; flex-direction: column; gap: 20px; }
+    .ia-section {
+      background: #fff; border: 1px solid var(--hairline);
+      border-radius: 12px 12px 3px 12px; padding: 28px 26px;
+    }
+    .ia-section__label {
+      font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 20px;
+    }
+    .ia-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+    @media(max-width: 640px) { .ia-row3 { grid-template-columns: 1fr; } }
+    .ia-field-full { margin-bottom: 14px; }
+    .ia-textarea {
+      width: 100%; min-height: 340px; background: var(--panel);
+      border: 1px solid var(--hairline); border-radius: 8px; padding: 14px;
+      color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 15px;
+      line-height: 1.7; resize: vertical; transition: border-color .2s, background .2s;
+      box-sizing: border-box;
+    }
+    .ia-textarea:focus { outline: none; border-color: var(--accent); background: #fff; }
+    .ia-textarea::placeholder { color: var(--placeholder); }
+
+    /* ── Actions ── */
+    .ia-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .ia-btn-primary {
+      padding: 12px 28px; background: var(--accent); border: none;
+      border-radius: 8px 8px 2px 8px; font-family: 'Montserrat', sans-serif;
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--paper); cursor: pointer; transition: opacity .2s;
+    }
+    .ia-btn-primary:hover { opacity: .85; }
+    .ia-btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+    .ia-btn-secondary {
+      padding: 12px 22px; background: none; border: 1px solid var(--hairline);
+      border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 11px;
+      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--taupe); cursor: pointer; transition: all .2s;
+    }
+    .ia-btn-secondary:hover { border-color: var(--taupe); color: var(--ink); }
+    .ia-btn-secondary:disabled { opacity: .4; cursor: not-allowed; }
+    .ia-btn-danger {
+      padding: 12px 22px; background: none; border: 1px solid rgba(180,40,40,.22);
+      border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 11px;
+      font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: #b02020; cursor: pointer; transition: all .2s; margin-left: auto;
+    }
+    .ia-btn-danger:hover { background: rgba(180,40,40,.05); border-color: rgba(180,40,40,.4); }
+    .ia-back-btn {
+      background: none; border: none; padding: 0;
+      font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 1px; text-transform: uppercase; color: var(--taupe); cursor: pointer; transition: color .2s;
+    }
+    .ia-back-btn:hover { color: var(--accent); }
+
+    /* ── Toast ── */
+    .ia-toast {
+      position: fixed; bottom: 24px; left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: rgba(30,140,60,.95); color: #fff; padding: 12px 24px;
+      border-radius: 8px; font-family: 'Montserrat', sans-serif; font-size: 11px;
+      font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+      opacity: 0; transition: all .3s; z-index: 999; pointer-events: none;
+    }
+    .ia-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .ia-toast.err  { background: rgba(180,40,40,.95); }
+  </style>
+</head>
+<body>
+
+  <header class="ia-header">
+    <div class="ia-header__brand">
+      <img class="ia-header__logo" src="/img/odm-logos/logo-header.svg" alt="Open Door Media">
+      <span class="ia-header__label"><span>Insights</span> · Admin</span>
+    </div>
+    <div class="ia-header__actions">
+      <a href="/insights/" class="ia-header__back">← Insights</a>
+      <button class="ia-btn-ghost" id="btn-logout" hidden>Sign Out</button>
+    </div>
+  </header>
+
+  <!-- Login -->
+  <section class="ia-login" id="screen-login">
+    <div class="ia-login__card">
+      <div class="ia-login__eyebrow">Admin Access</div>
+      <h1 class="ia-login__heading">Sign in to manage guides.</h1>
+      <div class="ia-field">
+        <label class="ia-label" for="in-owner">GitHub Username</label>
+        <input class="ia-input" id="in-owner" type="text" placeholder="your-github-username" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="ia-field">
+        <label class="ia-label" for="in-repo">Repository Name</label>
+        <input class="ia-input" id="in-repo" type="text" placeholder="odm-website" autocomplete="off" spellcheck="false">
+      </div>
+      <div class="ia-field">
+        <label class="ia-label" for="in-token">Personal Access Token</label>
+        <input class="ia-input" id="in-token" type="password" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off" spellcheck="false">
+      </div>
+      <button class="ia-login__submit" id="btn-login">Sign In →</button>
+      <div class="ia-error" id="login-err" hidden></div>
+      <p class="ia-login__note">
+        Need a token? <a href="https://github.com/settings/tokens/new?description=ODM+Insights+Admin&scopes=repo" target="_blank" rel="noopener">Create one on GitHub →</a><br>
+        Select the <strong>repo</strong> scope. Your credentials stay in this browser only.
+      </p>
+    </div>
+  </section>
+
+  <!-- App -->
+  <div class="ia-app" id="screen-app" hidden>
+
+    <div id="view-list">
+      <div class="ia-toolbar">
+        <div class="ia-tabs">
+          <button class="ia-tab is-active" data-f="drafts">Drafts</button>
+          <button class="ia-tab" data-f="published">Published</button>
+          <button class="ia-tab" data-f="all">All</button>
+        </div>
+        <button class="ia-new-btn" id="btn-new">+ New Guide</button>
+      </div>
+      <div class="ia-list" id="guide-list"></div>
+    </div>
+
+    <div id="view-editor" hidden>
+      <div class="ia-editor" id="ed"></div>
+    </div>
+
+  </div>
+
+  <div class="ia-toast" id="toast"></div>
+
+  <script>
+  'use strict';
+
+  const POSTS = 'insights/posts';
+
+  const S = { token: null, owner: null, repo: null, posts: [], filter: 'drafts' };
+
+  const $login  = document.getElementById('screen-login');
+  const $app    = document.getElementById('screen-app');
+  const $vList  = document.getElementById('view-list');
+  const $vEd    = document.getElementById('view-editor');
+  const $ed     = document.getElementById('ed');
+  const $list   = document.getElementById('guide-list');
+  const $logout = document.getElementById('btn-logout');
+  const $toast  = document.getElementById('toast');
+
+  // Toast
+  let _tt;
+  function toast(msg, err) {
+    $toast.textContent = msg;
+    $toast.className   = 'ia-toast' + (err ? ' err' : '');
+    requestAnimationFrame(() => $toast.classList.add('show'));
+    clearTimeout(_tt);
+    _tt = setTimeout(() => $toast.classList.remove('show'), 3200);
+  }
+
+  // GitHub API
+  async function gh(method, path, body) {
+    const r = await fetch('https://api.github.com' + path, {
+      method,
+      headers: {
+        'Authorization': 'Bearer ' + S.token,
+        'Accept':        'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type':  'application/json',
+      },
+      body: body ? JSON.stringify(body) : undefined,
+    });
+    if (!r.ok) { const e = await r.json().catch(() => ({})); throw new Error(e.message || 'HTTP ' + r.status); }
+    return r.json();
+  }
+
+  // Encoding
+  function b64dec(b64) {
+    const bin = atob(b64.replace(/\s/g, ''));
+    const b   = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) b[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(b);
+  }
+  function b64enc(str) {
+    const b = new TextEncoder().encode(str);
+    let s = '';
+    b.forEach(x => s += String.fromCharCode(x));
+    return btoa(s);
+  }
+
+  // Frontmatter
+  function parse(src) {
+    const m = src.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+    if (!m) return { meta: {}, body: src.trim() };
+    const meta = {};
+    for (const ln of m[1].split('\n')) {
+      const c = ln.indexOf(':');
+      if (c < 0) continue;
+      const k = ln.slice(0, c).trim();
+      const v = ln.slice(c + 1).trim().replace(/^["']|["']$/g, '');
+      if (k) meta[k] = v;
+    }
+    return { meta, body: m[2].trim() };
+  }
+
+  function build(meta, body) {
+    return [
+      '---',
+      'title: '     + clean(meta.title),
+      'author: '    + clean(meta.author),
+      'date: '      + (meta.date || ''),
+      'category: '  + clean(meta.category),
+      'published: ' + (meta.published === 'true' || meta.published === true ? 'true' : 'false'),
+      '---',
+      '',
+      body || '',
+    ].join('\n');
+  }
+
+  function clean(s)  { return (s || '').replace(/\n/g, ' '); }
+  function esc(s)    { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function today()   { return new Date().toISOString().split('T')[0]; }
+  function fmtDate(d) {
+    if (!d) return '';
+    const dt = new Date(d + 'T12:00:00');
+    return isNaN(dt) ? d : dt.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+  }
+
+  // Load guides
+  async function loadPosts() {
+    $list.innerHTML = '<div class="ia-loading"><span class="ia-dot"></span><span class="ia-dot"></span><span class="ia-dot"></span></div>';
+    try {
+      let files;
+      try {
+        files = await gh('GET', '/repos/' + S.owner + '/' + S.repo + '/contents/' + POSTS);
+      } catch (e) {
+        if (e.message.includes('404') || e.message.includes('Not Found')) { S.posts = []; renderList(); return; }
+        throw e;
+      }
+      const md    = Array.isArray(files) ? files.filter(f => f.name.endsWith('.md')) : [];
+      const posts = await Promise.all(md.map(async f => {
+        const file = await gh('GET', '/repos/' + S.owner + '/' + S.repo + '/contents/' + POSTS + '/' + f.name);
+        const { meta, body } = parse(b64dec(file.content));
+        return { filename: f.name, sha: file.sha, meta, body };
+      }));
+      posts.sort((a, b) => {
+        if (!a.meta.date && !b.meta.date) return 0;
+        if (!a.meta.date) return 1;
+        if (!b.meta.date) return -1;
+        return new Date(b.meta.date) - new Date(a.meta.date);
+      });
+      S.posts = posts;
+      renderList();
+    } catch (err) {
+      $list.innerHTML = '<div class="ia-empty">Failed to load: ' + esc(err.message) + '</div>';
+    }
+  }
+
+  // Render list
+  function renderList() {
+    const visible = S.posts.filter(p => {
+      const pub = p.meta.published === 'true';
+      if (S.filter === 'drafts')    return !pub;
+      if (S.filter === 'published') return pub;
+      return true;
+    });
+    if (!visible.length) {
+      $list.innerHTML = '<div class="ia-empty">Nothing here yet.</div>';
+      return;
+    }
+    $list.innerHTML = visible.map(p => {
+      const pub      = p.meta.published === 'true';
+      const badge    = pub
+        ? '<span class="ia-badge ia-badge--pub">Published</span>'
+        : '<span class="ia-badge ia-badge--draft">Draft</span>';
+      const catBadge = p.meta.category
+        ? '<span class="ia-badge ia-badge--cat">' + esc(p.meta.category) + '</span>'
+        : '';
+      const title = p.meta.title ? esc(p.meta.title) : '<em style="color:var(--taupe)">Untitled</em>';
+      const idx   = S.posts.indexOf(p);
+      return '<div class="ia-card" data-i="' + idx + '">'
+        + '<div class="ia-card__body">'
+        + '<div class="ia-card__meta">' + badge + catBadge
+        + (p.meta.date ? '<span class="ia-card__date">' + fmtDate(p.meta.date) + '</span>' : '')
+        + '</div>'
+        + '<div class="ia-card__title">' + title + '</div>'
+        + '</div>'
+        + '<div class="ia-card__arrow">›</div>'
+        + '</div>';
+    }).join('');
+    $list.querySelectorAll('.ia-card').forEach(c => {
+      c.addEventListener('click', () => openEditor(S.posts[+c.dataset.i]));
+    });
+  }
+
+  // Editor
+  function openEditor(post) {
+    showView('ed');
+    const isNew = !post;
+    const p     = post || { filename: '', sha: null, meta: {}, body: '' };
+    const pub   = p.meta.published === 'true';
+
+    $ed.innerHTML = [
+      '<div><button class="ia-back-btn" id="btn-back">← Back to list</button></div>',
+
+      '<div class="ia-section">',
+        '<div class="ia-section__label">Guide details</div>',
+        '<div class="ia-field-full">',
+          '<label class="ia-label" for="ef-title">Title</label>',
+          '<input class="ia-input" id="ef-title" type="text" placeholder="How to Create a GitHub Account" value="' + esc(p.meta.title || '') + '">',
+        '</div>',
+        '<div class="ia-row3">',
+          '<div>',
+            '<label class="ia-label" for="ef-author">Author</label>',
+            '<input class="ia-input" id="ef-author" type="text" placeholder="Open Door Media" value="' + esc(p.meta.author || 'Open Door Media') + '">',
+          '</div>',
+          '<div>',
+            '<label class="ia-label" for="ef-date">Date</label>',
+            '<input class="ia-input" id="ef-date" type="date" value="' + esc(p.meta.date || today()) + '">',
+          '</div>',
+          '<div>',
+            '<label class="ia-label" for="ef-cat">Category</label>',
+            '<input class="ia-input" id="ef-cat" type="text" placeholder="e.g. GitHub, Cloudflare, Marketing" value="' + esc(p.meta.category || '') + '">',
+          '</div>',
+        '</div>',
+      '</div>',
+
+      '<div class="ia-section">',
+        '<div class="ia-section__label">',
+          'Content ',
+          '<span style="font-size:9px;color:var(--taupe);font-weight:400;letter-spacing:0;text-transform:none">— Markdown supported: ## Heading, **bold**, *italic*, - list items, 1. numbered lists</span>',
+        '</div>',
+        '<textarea class="ia-textarea" id="ef-body" placeholder="Write the guide here. Use ## for section headings, **bold text**, *italics*, and - for bullet lists.">' + esc(p.body || '') + '</textarea>',
+      '</div>',
+
+      '<div class="ia-actions">',
+        '<button class="ia-btn-primary" id="btn-draft">Save Draft</button>',
+        pub
+          ? '<button class="ia-btn-secondary" id="btn-unpub">Unpublish</button>'
+          : '<button class="ia-btn-primary" id="btn-pub">Publish →</button>',
+        isNew ? '' : '<button class="ia-btn-danger" id="btn-del">Delete</button>',
+      '</div>',
+    ].join('');
+
+    document.getElementById('btn-back').addEventListener('click', () => { showView('list'); renderList(); });
+    document.getElementById('btn-draft').addEventListener('click', () => doSave(p, false, isNew));
+    const pubBtn = document.getElementById('btn-pub') || document.getElementById('btn-unpub');
+    if (pubBtn) {
+      const publishing = !!document.getElementById('btn-pub');
+      pubBtn.addEventListener('click', () => doSave(p, publishing, isNew));
+    }
+    if (!isNew) {
+      document.getElementById('btn-del').addEventListener('click', () => doDel(p));
+    }
+  }
+
+  // Save
+  async function doSave(post, publish, isNew) {
+    const meta = {
+      title:     document.getElementById('ef-title').value.trim(),
+      author:    document.getElementById('ef-author').value.trim(),
+      date:      document.getElementById('ef-date').value.trim(),
+      category:  document.getElementById('ef-cat').value.trim(),
+      published: publish ? 'true' : 'false',
+    };
+    const body    = document.getElementById('ef-body').value.trim();
+    const slug    = isNew ? mkSlug(meta.title) : post.filename;
+    const apiPath = '/repos/' + S.owner + '/' + S.repo + '/contents/' + POSTS + '/' + slug;
+    const payload = {
+      message: (publish ? 'Publish: ' : 'Draft: ') + (meta.title || slug),
+      content: b64enc(build(meta, body)),
+    };
+    if (post.sha) payload.sha = post.sha;
+
+    setBtns(true);
+    try {
+      const res     = await gh('PUT', apiPath, payload);
+      const updated = { filename: slug, sha: res.content.sha, meta, body };
+      if (isNew) {
+        S.posts.unshift(updated);
+      } else {
+        const i = S.posts.findIndex(p => p.filename === slug);
+        if (i !== -1) S.posts[i] = updated;
+      }
+      toast(publish ? 'Published — site rebuilds in ~30 sec' : 'Draft saved');
+      openEditor(updated);
+    } catch (err) {
+      toast('Save failed: ' + err.message, true);
+      setBtns(false);
+    }
+  }
+
+  function mkSlug(title) {
+    const base = title
+      ? title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60)
+      : 'guide-' + Date.now();
+    return base + '.md';
+  }
+
+  function setBtns(off) {
+    ['btn-draft','btn-pub','btn-unpub','btn-del'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.disabled = off;
+    });
+  }
+
+  // Delete
+  async function doDel(post) {
+    if (!confirm('Delete "' + (post.meta.title || post.filename) + '"? This cannot be undone.')) return;
+    setBtns(true);
+    try {
+      await gh('DELETE', '/repos/' + S.owner + '/' + S.repo + '/contents/' + POSTS + '/' + post.filename, {
+        message: 'Delete: ' + (post.meta.title || post.filename),
+        sha:     post.sha,
+      });
+      S.posts = S.posts.filter(p => p.filename !== post.filename);
+      toast('Deleted');
+      showView('list');
+      renderList();
+    } catch (err) {
+      toast('Delete failed: ' + err.message, true);
+      setBtns(false);
+    }
+  }
+
+  // View switcher
+  function showView(v) {
+    $vList.hidden = v !== 'list';
+    $vEd.hidden   = v !== 'ed';
+  }
+
+  // Tabs
+  document.querySelectorAll('.ia-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      document.querySelectorAll('.ia-tab').forEach(x => x.classList.remove('is-active'));
+      t.classList.add('is-active');
+      S.filter = t.dataset.f;
+      renderList();
+    });
+  });
+
+  document.getElementById('btn-new').addEventListener('click', () => openEditor(null));
+
+  // Login
+  ['in-owner','in-repo','in-token'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('btn-login').click();
+    });
+  });
+
+  document.getElementById('btn-login').addEventListener('click', async () => {
+    const owner = document.getElementById('in-owner').value.trim();
+    const repo  = document.getElementById('in-repo').value.trim();
+    const token = document.getElementById('in-token').value.trim();
+    const errEl = document.getElementById('login-err');
+    const btn   = document.getElementById('btn-login');
+    errEl.hidden = true;
+    if (!owner || !repo || !token) {
+      errEl.textContent = 'All three fields are required.';
+      errEl.hidden = false;
+      return;
+    }
+    btn.disabled = true; btn.textContent = 'Signing in…';
+    try {
+      const r = await fetch('https://api.github.com/user', {
+        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' },
+      });
+      if (!r.ok) throw new Error('Invalid token or insufficient permissions');
+      S.token = token; S.owner = owner; S.repo = repo;
+      localStorage.setItem('ins_t', token);
+      localStorage.setItem('ins_o', owner);
+      localStorage.setItem('ins_r', repo);
+      showApp();
+    } catch (err) {
+      errEl.textContent = 'Sign-in failed: ' + err.message;
+      errEl.hidden = false;
+    } finally {
+      btn.disabled = false; btn.textContent = 'Sign In →';
+    }
+  });
+
+  $logout.addEventListener('click', () => {
+    ['ins_t','ins_o','ins_r'].forEach(k => localStorage.removeItem(k));
+    Object.assign(S, { token: null, owner: null, repo: null, posts: [] });
+    $login.hidden = false; $app.hidden = true; $logout.hidden = true;
+  });
+
+  function showApp() {
+    $login.hidden = true; $app.hidden = false; $logout.hidden = false;
+    showView('list');
+    loadPosts();
+  }
+
+  // Auto-login from localStorage
+  (function () {
+    const t = localStorage.getItem('ins_t');
+    const o = localStorage.getItem('ins_o');
+    const r = localStorage.getItem('ins_r');
+    if (t && o && r) {
+      S.token = t; S.owner = o; S.repo = r;
+      document.getElementById('in-owner').value = o;
+      document.getElementById('in-repo').value  = r;
+      showApp();
+    }
+  })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+name: Build Insights
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'insights/posts/**.md'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build insight pages
+        run: node build-insights.js
+
+      - name: Commit and push generated pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add insights/guides insights/index.html
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+          else
+            git commit -m "insights: rebuild HTML pages"
+            git push
+          fi
