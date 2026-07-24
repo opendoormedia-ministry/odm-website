@@ -59,6 +59,35 @@ function inline(text) {
   }).join('');
 }
 
+// Recursively renders a list block, preserving nested sub-lists.
+function parseList(lines, listTag) {
+  const topRe = listTag === 'ol' ? /^\d+\. / : /^[-*] /;
+  let html = '';
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (!line.trim()) { i++; continue; }
+    if (!topRe.test(line)) { i++; continue; }
+    const content = line.replace(topRe, '').trim();
+    i++;
+    // Collect indented continuation/sub-item lines
+    const sub = [];
+    while (i < lines.length && lines[i].trim() && /^\s/.test(lines[i])) {
+      sub.push(lines[i]);
+      i++;
+    }
+    let nested = '';
+    if (sub.length) {
+      const minInd = Math.min(...sub.map(l => (l.match(/^(\s+)/) || ['',''])[1].length));
+      const dedented = sub.map(l => l.slice(minInd));
+      if      (/^[-*] /.test(dedented[0]))  nested = parseList(dedented, 'ul');
+      else if (/^\d+\. /.test(dedented[0])) nested = parseList(dedented, 'ol');
+    }
+    html += `<li>${inline(content)}${nested}</li>`;
+  }
+  return `<${listTag}>${html}</${listTag}>`;
+}
+
 function mdToHtml(md) {
   // Pre-extract fenced code blocks before splitting — they may contain blank lines.
   const codeBlocks = [];
@@ -82,6 +111,23 @@ function mdToHtml(md) {
     // Horizontal rule
     if (/^[-*_]{3,}$/.test(block)) return '<hr>';
 
+    // Table — rows delimited by |, separator row contains only :, -, spaces
+    if (/^\|/.test(block)) {
+      const rows   = block.split('\n').map(r => r.trim()).filter(Boolean);
+      const isSep  = r => r.replace(/^\||\|$/g, '').split('|').every(c => /^[\s:+-]*-[\s:+-]*$/.test(c));
+      const sepIdx = rows.findIndex(isSep);
+      function parseRow(row, cell) {
+        return '<tr>' + row.replace(/^\||\|$/g, '').split('|')
+          .map(c => `<${cell}>${inline(c.trim())}</${cell}>`).join('') + '</tr>';
+      }
+      if (sepIdx >= 0) {
+        const thead = rows.slice(0, sepIdx).map(r => parseRow(r, 'th')).join('');
+        const tbody = rows.slice(sepIdx + 1).map(r => parseRow(r, 'td')).join('');
+        return `<table><thead>${thead}</thead><tbody>${tbody}</tbody></table>`;
+      }
+      return `<table><tbody>${rows.map(r => parseRow(r, 'td')).join('')}</tbody></table>`;
+    }
+
     if (/^### /.test(block)) return `<h3>${inline(block.slice(4))}</h3>`;
     if (/^## /.test(block))  return `<h2>${inline(block.slice(3))}</h2>`;
     if (/^# /.test(block))   return `<h1>${inline(block.slice(2))}</h1>`;
@@ -90,14 +136,9 @@ function mdToHtml(md) {
       const inner = block.split('\n').map(l => inline(l.replace(/^> ?/, ''))).join('<br>');
       return `<blockquote>${inner}</blockquote>`;
     }
-    if (/^[-*] /.test(block)) {
-      const items = block.split('\n').filter(l => /^[-*] /.test(l)).map(l => `<li>${inline(l.replace(/^[-*] /, ''))}</li>`);
-      return `<ul>${items.join('')}</ul>`;
-    }
-    if (/^\d+\. /.test(block)) {
-      const items = block.split('\n').filter(l => /^\d+\. /.test(l)).map(l => `<li>${inline(l.replace(/^\d+\. /, ''))}</li>`);
-      return `<ol>${items.join('')}</ol>`;
-    }
+    if (/^[-*] /.test(block))  return parseList(block.split('\n'), 'ul');
+    if (/^\d+\. /.test(block)) return parseList(block.split('\n'), 'ol');
+
     return `<p>${inline(block.replace(/\n/g, ' '))}</p>`;
   }).filter(Boolean).join('\n');
 }
@@ -238,6 +279,11 @@ function guidePageHtml(meta, bodyHtml, slug) {
     .gp__body h3 { font-size: 18px; color: var(--ink); margin: 1.6em 0 .5em; }
     .gp__body ul, .gp__body ol { margin: 0 0 1.4em 1.6em; }
     .gp__body li { color: var(--taupe); margin-bottom: .5em; }
+    .gp__body li ul, .gp__body li ol { margin: .4em 0 .2em 1.4em; }
+    .gp__body table { width: 100%; border-collapse: collapse; margin: 1.4em 0; font-size: 14px; }
+    .gp__body th, .gp__body td { border: 1px solid var(--hairline); padding: 9px 14px; text-align: left; }
+    .gp__body th { background: var(--panel); font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--ink); }
+    .gp__body td { color: var(--taupe); }
     .gp__body strong { color: var(--ink); }
     .gp__body em { font-style: italic; }
     .gp__body code { background: var(--panel); border-radius: 4px; padding: 1px 6px; font-size: .88em; color: var(--ink); }
