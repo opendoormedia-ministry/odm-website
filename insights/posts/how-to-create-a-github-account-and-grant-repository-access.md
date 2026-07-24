@@ -3,7 +3,7 @@ title: How to Create a GitHub Account and Grant Repository Access
 author: Open Door Media
 date: 2026-07-24
 category: GitHub
-published: true
+published: false
 ---
 
 This guide walks you through setting up a free GitHub account, creating a repository for your project, and giving your developer admin access to work on it.
@@ -70,7 +70,7 @@ This step gives your developer the ability to manage the repository on your beha
 | GitHub username | **[YOUR USERNAME]** |
 | Password | **[STORED SECURELY]** |
 | Repository name | **[YOUR REPOSITORY NAME]** |
-| Developer's GitHub username/email | **opendoormedia** |
+| Developer's GitHub username/email | **open-door-media** |
 
 ---
 
