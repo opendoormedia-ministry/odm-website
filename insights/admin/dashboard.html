@@ -527,6 +527,91 @@
   function esc(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
   function escAttr(s) { return String(s || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
+  /* ── Markdown → HTML (for loading legacy guides into the editor) ──────────── */
+  function mdMarkup(s) {
+    return s
+      .replace(/\*\*(.+?)\*\*/g,  '<strong>$1</strong>')
+      .replace(/\*([^*\n]+?)\*/g, '<em>$1</em>')
+      .replace(/~~(.+?)~~/g,      '<del>$1</del>')
+      .replace(/`([^`]+)`/g,      '<code>$1</code>');
+  }
+  function mdInline(text) {
+    const tokens = [];
+    let last = 0;
+    const re = /(!?)\[([^\]]*)\]\((https?:\/\/[^)]*)\)/g;
+    let m;
+    while ((m = re.exec(text)) !== null) {
+      if (m.index > last) tokens.push({ t: 'text', v: text.slice(last, m.index) });
+      tokens.push(m[1] === '!' ? { t: 'img', alt: m[2], src: m[3] } : { t: 'link', label: m[2], href: m[3] });
+      last = m.index + m[0].length;
+    }
+    if (last < text.length) tokens.push({ t: 'text', v: text.slice(last) });
+    return tokens.map(function (tok) {
+      if (tok.t === 'link') return '<a href="' + escAttr(tok.href) + '" target="_blank" rel="noopener noreferrer">' + mdMarkup(esc(tok.label)) + '</a>';
+      if (tok.t === 'img')  return '<img src="' + escAttr(tok.src) + '" alt="' + escAttr(tok.alt) + '" loading="lazy">';
+      return mdMarkup(esc(tok.v));
+    }).join('');
+  }
+  function mdParseList(lines, listTag) {
+    const topRe = listTag === 'ol' ? /^\d+\. / : /^[-*] /;
+    let html = ''; let i = 0;
+    while (i < lines.length) {
+      const line = lines[i];
+      if (!line.trim() || !topRe.test(line)) { i++; continue; }
+      const content = line.replace(topRe, '').trim();
+      i++;
+      const sub = [];
+      while (i < lines.length && lines[i].trim() && /^\s/.test(lines[i])) { sub.push(lines[i]); i++; }
+      let nested = '';
+      if (sub.length) {
+        const minInd = Math.min.apply(null, sub.map(function (l) { return (l.match(/^(\s+)/) || ['',''])[1].length; }));
+        const ded = sub.map(function (l) { return l.slice(minInd); });
+        if      (/^[-*] /.test(ded[0]))  nested = mdParseList(ded, 'ul');
+        else if (/^\d+\. /.test(ded[0])) nested = mdParseList(ded, 'ol');
+      }
+      html += '<li>' + mdInline(content) + nested + '</li>';
+    }
+    return '<' + listTag + '>' + html + '</' + listTag + '>';
+  }
+  function mdToHtml(md) {
+    md = md.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    const codeBlocks = [];
+    md = md.replace(/```(\w*)\n([\s\S]*?)```/g, function (_, lang, code) {
+      codeBlocks.push({ lang: lang.trim(), code: code.replace(/\n$/, '') });
+      return '\x00CODE' + (codeBlocks.length - 1) + '\x00';
+    });
+    return md.trim().split(/\n\n+/).map(function (block) {
+      block = block.trim();
+      if (!block) return '';
+      const cm = block.match(/^\x00CODE(\d+)\x00$/);
+      if (cm) {
+        const cb = codeBlocks[+cm[1]];
+        const cls = cb.lang ? ' class="language-' + esc(cb.lang) + '"' : '';
+        return '<pre><code' + cls + '>' + esc(cb.code) + '</code></pre>';
+      }
+      if (/^[-*_]{3,}$/.test(block)) return '<hr>';
+      if (/^\|/.test(block)) {
+        const rows = block.split('\n').map(function (r) { return r.trim(); }).filter(Boolean);
+        const isSep = function (r) { return r.replace(/^\||\|$/g, '').split('|').every(function (c) { return /^[\s:+-]*-[\s:+-]*$/.test(c); }); };
+        const sepIdx = rows.findIndex(isSep);
+        function parseRow(row, cell) {
+          return '<tr>' + row.replace(/^\||\|$/g, '').split('|').map(function (c) { return '<' + cell + '>' + mdInline(c.trim()) + '</' + cell + '>'; }).join('') + '</tr>';
+        }
+        if (sepIdx >= 0) {
+          return '<table><thead>' + rows.slice(0, sepIdx).map(function (r) { return parseRow(r, 'th'); }).join('') + '</thead><tbody>' + rows.slice(sepIdx + 1).map(function (r) { return parseRow(r, 'td'); }).join('') + '</tbody></table>';
+        }
+        return '<table><tbody>' + rows.map(function (r) { return parseRow(r, 'td'); }).join('') + '</tbody></table>';
+      }
+      if (/^### /.test(block)) return '<h3>' + mdInline(block.slice(4)) + '</h3>';
+      if (/^## /.test(block))  return '<h2>' + mdInline(block.slice(3)) + '</h2>';
+      if (/^# /.test(block))   return '<h1>' + mdInline(block.slice(2)) + '</h1>';
+      if (/^> /.test(block))   return '<blockquote>' + block.split('\n').map(function (l) { return mdInline(l.replace(/^> ?/, '')); }).join('<br>') + '</blockquote>';
+      if (/^[-*] /.test(block))  return mdParseList(block.split('\n'), 'ul');
+      if (/^\d+\. /.test(block)) return mdParseList(block.split('\n'), 'ol');
+      return '<p>' + mdInline(block.replace(/\n/g, ' ')) + '</p>';
+    }).filter(Boolean).join('\n');
+  }
+
   /* ── HTML cleaner (run before save) ─────────────────────────────────────── */
   function cleanHtml(html) {
     const tmp = document.createElement('div');
@@ -649,12 +734,8 @@
     document.getElementById('ef-date').value   = p.meta.date     || today();
     document.getElementById('ef-cat').value    = p.meta.category || '';
 
-    // Load body — if it's legacy markdown (no format:html), show a notice
-    if (p.body && p.meta.format !== 'html') {
-      $edBody.innerHTML = '<p style="background:rgba(197,88,51,.07);border:1px solid rgba(197,88,51,.25);border-radius:8px;padding:12px 16px;font-size:14px;color:var(--taupe);"><strong style="color:var(--accent)">Legacy markdown guide.</strong> The stored content is in markdown format. Clear this notice and type/paste the content to re-enter it in the new editor, then save to convert it.</p><pre style="font-family:monospace;font-size:13px;line-height:1.6;color:var(--taupe);white-space:pre-wrap">' + esc(p.body) + '</pre>';
-    } else {
-      $edBody.innerHTML = p.body || '';
-    }
+    // Convert legacy markdown bodies to HTML automatically on load
+    $edBody.innerHTML = (p.body && p.meta.format !== 'html') ? mdToHtml(p.body) : (p.body || '');
 
     document.getElementById('btn-pub').hidden   = pub;
     document.getElementById('btn-unpub').hidden  = !pub;
