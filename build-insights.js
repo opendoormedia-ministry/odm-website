@@ -484,7 +484,8 @@ const posts = mdFiles
   .sort((a, b) => new Date(b.meta.date || 0) - new Date(a.meta.date || 0));
 
 for (const post of posts) {
-  const html = guidePageHtml(post.meta, mdToHtml(post.body), post.slug);
+  const bodyHtml = post.meta.format === 'html' ? post.body : mdToHtml(post.body);
+  const html = guidePageHtml(post.meta, bodyHtml, post.slug);
   fs.writeFileSync(path.join(OUT_DIR, post.slug + '.html'), html, 'utf8');
   console.log(`  ✓  guides/${post.slug}.html`);
 }
