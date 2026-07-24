@@ -6,8 +6,6 @@ category: GitHub
 published: false
 ---
 
-# How to Create a GitHub Account and Grant Repository Access
-
 This guide walks you through setting up a free GitHub account, creating a repository for your project, and giving your developer admin access to work on it.
 
 ---
@@ -56,7 +54,7 @@ This step gives your developer the ability to manage the repository on your beha
 2. In the left sidebar, click **Collaborators** (you may be asked to re-enter your password to confirm).
 3. Click **Add people**.
 4. Enter your developer's GitHub username, or email:
-   - Developer's GitHub username/email: **[DEVELOPER'S GITHUB USERNAME OR EMAIL]**
+   - Open Door Media's Username: **open-door-media**
 5. Once they appear in the search results, click their name to select them.
 6. Choose their permission level: select **Admin**.
 7. Click **Add [developer's username] to this repository**.
