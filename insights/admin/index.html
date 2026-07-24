@@ -86,8 +86,6 @@
       background: rgba(180,40,40,.05); border: 1px solid rgba(180,40,40,.22);
       border-radius: 8px; font-size: 13px; color: #b02020;
     }
-    .ia-login__note { margin-top: 20px; font-size: 12px; color: var(--taupe); line-height: 1.6; text-align: center; }
-    .ia-login__note a { color: var(--accent); }
 
     /* ── App shell ── */
     .ia-app {
@@ -235,27 +233,19 @@
       <div class="ia-login__eyebrow">Admin Access</div>
       <h1 class="ia-login__heading">Sign in to manage guides.</h1>
       <div class="ia-field">
-        <label class="ia-label" for="in-owner">GitHub Username</label>
-        <input class="ia-input" id="in-owner" type="text" placeholder="your-github-username" autocomplete="off" spellcheck="false">
+        <label class="ia-label" for="in-user">Username</label>
+        <input class="ia-input" id="in-user" type="text" placeholder="Username" autocomplete="username" spellcheck="false">
       </div>
       <div class="ia-field">
-        <label class="ia-label" for="in-repo">Repository Name</label>
-        <input class="ia-input" id="in-repo" type="text" placeholder="odm-website" autocomplete="off" spellcheck="false">
-      </div>
-      <div class="ia-field">
-        <label class="ia-label" for="in-token">Personal Access Token</label>
-        <input class="ia-input" id="in-token" type="password" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off" spellcheck="false">
+        <label class="ia-label" for="in-pass">Password</label>
+        <input class="ia-input" id="in-pass" type="password" placeholder="••••••••" autocomplete="current-password">
       </div>
       <button class="ia-login__submit" id="btn-login">Sign In →</button>
       <div class="ia-error" id="login-err" hidden></div>
-      <p class="ia-login__note">
-        Need a token? <a href="https://github.com/settings/tokens/new?description=ODM+Insights+Admin&scopes=repo" target="_blank" rel="noopener">Create one on GitHub →</a><br>
-        Select the <strong>repo</strong> scope. Your credentials stay in this browser only.
-      </p>
     </div>
   </section>
 
-  <!-- App -->
+  <!-- App (hidden until authenticated) -->
   <div class="ia-app" id="screen-app" hidden>
 
     <div id="view-list">
@@ -281,10 +271,16 @@
   <script>
   'use strict';
 
-  const POSTS = 'insights/posts';
+  // ── Config ───────────────────────────────────────────────────────────────────
+  const WORKER = 'https://YOUR_WORKER_URL.workers.dev'; // replace after deploying the Worker
+  const OWNER  = 'opendoormedia-ministry';
+  const REPO   = 'odm-website';
+  const POSTS  = 'insights/posts';
 
-  const S = { token: null, owner: null, repo: null, posts: [], filter: 'drafts' };
+  // ── State ────────────────────────────────────────────────────────────────────
+  const S = { token: null, posts: [], filter: 'drafts' }; // token = GitHub PAT, set after auth
 
+  // ── DOM refs ─────────────────────────────────────────────────────────────────
   const $login  = document.getElementById('screen-login');
   const $app    = document.getElementById('screen-app');
   const $vList  = document.getElementById('view-list');
@@ -294,7 +290,7 @@
   const $logout = document.getElementById('btn-logout');
   const $toast  = document.getElementById('toast');
 
-  // Toast
+  // ── Toast ────────────────────────────────────────────────────────────────────
   let _tt;
   function toast(msg, err) {
     $toast.textContent = msg;
@@ -304,7 +300,7 @@
     _tt = setTimeout(() => $toast.classList.remove('show'), 3200);
   }
 
-  // GitHub API
+  // ── GitHub API ───────────────────────────────────────────────────────────────
   async function gh(method, path, body) {
     const r = await fetch('https://api.github.com' + path, {
       method,
@@ -320,7 +316,7 @@
     return r.json();
   }
 
-  // Encoding
+  // ── Encoding ─────────────────────────────────────────────────────────────────
   function b64dec(b64) {
     const bin = atob(b64.replace(/\s/g, ''));
     const b   = new Uint8Array(bin.length);
@@ -334,7 +330,7 @@
     return btoa(s);
   }
 
-  // Frontmatter
+  // ── Frontmatter ──────────────────────────────────────────────────────────────
   function parse(src) {
     const m = src.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
     if (!m) return { meta: {}, body: src.trim() };
@@ -363,29 +359,29 @@
     ].join('\n');
   }
 
-  function clean(s)  { return (s || '').replace(/\n/g, ' '); }
-  function esc(s)    { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  function today()   { return new Date().toISOString().split('T')[0]; }
+  function clean(s)   { return (s || '').replace(/\n/g, ' '); }
+  function esc(s)     { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function today()    { return new Date().toISOString().split('T')[0]; }
   function fmtDate(d) {
     if (!d) return '';
     const dt = new Date(d + 'T12:00:00');
     return isNaN(dt) ? d : dt.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
   }
 
-  // Load guides
+  // ── Load guides ───────────────────────────────────────────────────────────────
   async function loadPosts() {
     $list.innerHTML = '<div class="ia-loading"><span class="ia-dot"></span><span class="ia-dot"></span><span class="ia-dot"></span></div>';
     try {
       let files;
       try {
-        files = await gh('GET', '/repos/' + S.owner + '/' + S.repo + '/contents/' + POSTS);
+        files = await gh('GET', '/repos/' + OWNER + '/' + REPO + '/contents/' + POSTS);
       } catch (e) {
         if (e.message.includes('404') || e.message.includes('Not Found')) { S.posts = []; renderList(); return; }
         throw e;
       }
       const md    = Array.isArray(files) ? files.filter(f => f.name.endsWith('.md')) : [];
       const posts = await Promise.all(md.map(async f => {
-        const file = await gh('GET', '/repos/' + S.owner + '/' + S.repo + '/contents/' + POSTS + '/' + f.name);
+        const file = await gh('GET', '/repos/' + OWNER + '/' + REPO + '/contents/' + POSTS + '/' + f.name);
         const { meta, body } = parse(b64dec(file.content));
         return { filename: f.name, sha: file.sha, meta, body };
       }));
@@ -402,7 +398,7 @@
     }
   }
 
-  // Render list
+  // ── Render list ───────────────────────────────────────────────────────────────
   function renderList() {
     const visible = S.posts.filter(p => {
       const pub = p.meta.published === 'true';
@@ -439,7 +435,7 @@
     });
   }
 
-  // Editor
+  // ── Editor ────────────────────────────────────────────────────────────────────
   function openEditor(post) {
     showView('ed');
     const isNew = !post;
@@ -500,7 +496,7 @@
     }
   }
 
-  // Save
+  // ── Save ─────────────────────────────────────────────────────────────────────
   async function doSave(post, publish, isNew) {
     const meta = {
       title:     document.getElementById('ef-title').value.trim(),
@@ -511,7 +507,7 @@
     };
     const body    = document.getElementById('ef-body').value.trim();
     const slug    = isNew ? mkSlug(meta.title) : post.filename;
-    const apiPath = '/repos/' + S.owner + '/' + S.repo + '/contents/' + POSTS + '/' + slug;
+    const apiPath = '/repos/' + OWNER + '/' + REPO + '/contents/' + POSTS + '/' + slug;
     const payload = {
       message: (publish ? 'Publish: ' : 'Draft: ') + (meta.title || slug),
       content: b64enc(build(meta, body)),
@@ -550,12 +546,12 @@
     });
   }
 
-  // Delete
+  // ── Delete ────────────────────────────────────────────────────────────────────
   async function doDel(post) {
     if (!confirm('Delete "' + (post.meta.title || post.filename) + '"? This cannot be undone.')) return;
     setBtns(true);
     try {
-      await gh('DELETE', '/repos/' + S.owner + '/' + S.repo + '/contents/' + POSTS + '/' + post.filename, {
+      await gh('DELETE', '/repos/' + OWNER + '/' + REPO + '/contents/' + POSTS + '/' + post.filename, {
         message: 'Delete: ' + (post.meta.title || post.filename),
         sha:     post.sha,
       });
@@ -569,13 +565,13 @@
     }
   }
 
-  // View switcher
+  // ── View switcher ─────────────────────────────────────────────────────────────
   function showView(v) {
     $vList.hidden = v !== 'list';
     $vEd.hidden   = v !== 'ed';
   }
 
-  // Tabs
+  // ── Tabs ──────────────────────────────────────────────────────────────────────
   document.querySelectorAll('.ia-tab').forEach(t => {
     t.addEventListener('click', () => {
       document.querySelectorAll('.ia-tab').forEach(x => x.classList.remove('is-active'));
@@ -587,67 +583,110 @@
 
   document.getElementById('btn-new').addEventListener('click', () => openEditor(null));
 
-  // Login
-  ['in-owner','in-repo','in-token'].forEach(id => {
+  // ── Auth helpers ──────────────────────────────────────────────────────────────
+  function showApp(pat) {
+    S.token = pat;
+    $login.hidden = false; // keep in DOM but visually hidden via the flex centering going away
+    $login.hidden = true;
+    $app.hidden   = false;
+    $logout.hidden = false;
+    showView('list');
+    loadPosts();
+  }
+
+  function showLogin(errMsg) {
+    const btn = document.getElementById('btn-login');
+    btn.disabled    = false;
+    btn.textContent = 'Sign In →';
+    if (errMsg) {
+      const errEl = document.getElementById('login-err');
+      errEl.textContent = errMsg;
+      errEl.hidden = false;
+    }
+  }
+
+  // ── Login ─────────────────────────────────────────────────────────────────────
+  ['in-user', 'in-pass'].forEach(id => {
     document.getElementById(id).addEventListener('keydown', e => {
       if (e.key === 'Enter') document.getElementById('btn-login').click();
     });
   });
 
   document.getElementById('btn-login').addEventListener('click', async () => {
-    const owner = document.getElementById('in-owner').value.trim();
-    const repo  = document.getElementById('in-repo').value.trim();
-    const token = document.getElementById('in-token').value.trim();
-    const errEl = document.getElementById('login-err');
-    const btn   = document.getElementById('btn-login');
-    errEl.hidden = true;
-    if (!owner || !repo || !token) {
-      errEl.textContent = 'All three fields are required.';
+    const username = document.getElementById('in-user').value.trim();
+    const password = document.getElementById('in-pass').value;
+    const errEl    = document.getElementById('login-err');
+    const btn      = document.getElementById('btn-login');
+    errEl.hidden   = true;
+    if (!username || !password) {
+      errEl.textContent = 'Please enter your username and password.';
       errEl.hidden = false;
       return;
     }
     btn.disabled = true; btn.textContent = 'Signing in…';
     try {
-      const r = await fetch('https://api.github.com/user', {
-        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json' },
+      const r = await fetch(WORKER + '/login', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ username, password }),
       });
-      if (!r.ok) throw new Error('Invalid token or insufficient permissions');
-      S.token = token; S.owner = owner; S.repo = repo;
-      localStorage.setItem('ins_t', token);
-      localStorage.setItem('ins_o', owner);
-      localStorage.setItem('ins_r', repo);
-      showApp();
+      if (!r.ok) {
+        const data = await r.json().catch(() => ({}));
+        throw new Error(data.error || 'Invalid credentials');
+      }
+      const { token } = await r.json();
+      localStorage.setItem('ins_auth_token', token);
+      // Immediately verify to get the PAT
+      const v = await fetch(WORKER + '/verify', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ token }),
+      });
+      const vdata = await v.json();
+      if (!vdata.valid || !vdata.pat) throw new Error('Session error — please try again');
+      showApp(vdata.pat);
     } catch (err) {
-      errEl.textContent = 'Sign-in failed: ' + err.message;
-      errEl.hidden = false;
-    } finally {
-      btn.disabled = false; btn.textContent = 'Sign In →';
+      showLogin('Sign-in failed: ' + err.message);
     }
   });
 
+  // ── Logout ────────────────────────────────────────────────────────────────────
   $logout.addEventListener('click', () => {
-    ['ins_t','ins_o','ins_r'].forEach(k => localStorage.removeItem(k));
-    Object.assign(S, { token: null, owner: null, repo: null, posts: [] });
-    $login.hidden = false; $app.hidden = true; $logout.hidden = true;
+    localStorage.removeItem('ins_auth_token');
+    S.token = null; S.posts = [];
+    $login.hidden  = false;
+    $app.hidden    = true;
+    $logout.hidden = true;
+    document.getElementById('in-pass').value = '';
   });
 
-  function showApp() {
-    $login.hidden = true; $app.hidden = false; $logout.hidden = false;
-    showView('list');
-    loadPosts();
-  }
+  // ── Auto-login on page load ───────────────────────────────────────────────────
+  (async function () {
+    const token = localStorage.getItem('ins_auth_token');
+    if (!token) return;
 
-  // Auto-login from localStorage
-  (function () {
-    const t = localStorage.getItem('ins_t');
-    const o = localStorage.getItem('ins_o');
-    const r = localStorage.getItem('ins_r');
-    if (t && o && r) {
-      S.token = t; S.owner = o; S.repo = r;
-      document.getElementById('in-owner').value = o;
-      document.getElementById('in-repo').value  = r;
-      showApp();
+    const btn = document.getElementById('btn-login');
+    btn.disabled    = true;
+    btn.textContent = 'Checking session…';
+
+    try {
+      const r    = await fetch(WORKER + '/verify', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ token }),
+      });
+      const data = await r.json();
+      if (data.valid && data.pat) {
+        showApp(data.pat);
+        return;
+      }
+      // Token expired or invalid
+      localStorage.removeItem('ins_auth_token');
+    } catch {
+      // Network error — fall through to login form
     }
+
+    showLogin();
   })();
   </script>
 
