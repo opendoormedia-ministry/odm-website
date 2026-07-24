@@ -2,7 +2,7 @@
 title: Getting Your PayPal Donation Details for Your Website
 author: Open Door Media
 date: 2026-07-24
-category: PayPal
+category: Websites
 format: html
 published: false
 ---
