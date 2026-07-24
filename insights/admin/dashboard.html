@@ -216,6 +216,9 @@
     }
     .ia-back-btn:hover { color: var(--accent); }
 
+    /* Ensure hidden attribute always wins over display:flex/grid rules */
+    [hidden] { display: none !important; }
+
     /* ── Modals ───────────────────────────────────────────────────────────────── */
     .ed-overlay {
       position: fixed; inset: 0; background: rgba(31,26,26,.45);
