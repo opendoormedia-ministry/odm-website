@@ -89,6 +89,7 @@ function parseList(lines, listTag) {
 }
 
 function mdToHtml(md) {
+  md = md.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
   // Pre-extract fenced code blocks before splitting — they may contain blank lines.
   const codeBlocks = [];
   md = md.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
