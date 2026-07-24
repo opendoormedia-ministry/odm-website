@@ -4,7 +4,7 @@ author: Open Door Media
 date: 2026-07-24
 category: PayPal
 format: html
-published: false
+published: true
 ---
 
 <p><strong>Legacy markdown guide.</strong> The stored content is in markdown format. Clear this notice and type/paste the content to re-enter it in the new editor, then save to convert it.</p><pre><p><font color="rgba(0, 0, 0, 0)">To set up online donations on your website, I need one small piece of information from your PayPal account. It's called a </font><strong>Client ID</strong><font color="rgba(0, 0, 0, 0)"> — think of it like a name tag PayPal uses to recognize your organization's account. It is </font><strong>not </strong><font color="rgba(0, 0, 0, 0)">your password, and you will never need to share your password with me.
