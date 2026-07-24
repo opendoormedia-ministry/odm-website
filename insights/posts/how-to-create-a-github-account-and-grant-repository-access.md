@@ -3,7 +3,7 @@ title: How to Create a GitHub Account and Grant Repository Access
 author: Open Door Media
 date: 2026-07-24
 category: GitHub
-published: true
+published: false
 ---
 
 # How to Create a GitHub Account and Grant Repository Access
