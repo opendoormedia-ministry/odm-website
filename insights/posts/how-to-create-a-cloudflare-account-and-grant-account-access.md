@@ -3,7 +3,7 @@ title: How to Create a Cloudflare Account and Grant Account Access
 author: Open Door Media
 date: 2026-07-24
 category: Cloudflare
-published: true
+published: false
 ---
 
 This guide walks you through creating a free Cloudflare account and adding your developer as a member so they can manage your site.
@@ -33,7 +33,6 @@ This gives your developer full access to manage your Cloudflare account — incl
 2. Click **Manage Account** in the left sidebar → select **Members**.
 3. Click **Invite**.
 4. Enter your developer's email: `DEVELOPER'S EMAIL ADDRESS`
-Open Door Media: **opendoormedia3@gmail.com**
 5. Under **Roles**, choose one:
 
    | Role | What it gives them |
