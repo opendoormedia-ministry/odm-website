@@ -118,18 +118,8 @@
       <p>Step-by-step guides for our clients, plus tips on marketing, websites, and growing your mission online.</p>
     </div>
     
-    <div class="ig-filters">
-      <button class="ig-filter is-active" data-cat="all">All</button>
-      <button class="ig-filter" data-cat="GitHub">GitHub</button>
-    </div>
     <div class="ig-grid" id="ig-grid">
-      
-      <article class="ig-card" data-category="GitHub">
-        <span class="ig-card__cat">GitHub</span>
-        <h2 class="ig-card__title">How to Create a GitHub Account and Grant Repository Access</h2>
-        <p class="ig-card__meta">Open Door Media · July 24, 2026</p>
-        <a href="/insights/guides/how-to-create-a-github-account-and-grant-repository-access.html" class="ig-card__link">Read guide →</a>
-      </article>
+      <p class="ig-empty">No guides published yet — check back soon.</p>
     </div>
   </main>
 
@@ -155,21 +145,6 @@
     </div>
   </footer>
   <script src="/js/main.js"></script>
-  <script>
-  (function () {
-    var filters = document.querySelectorAll('.ig-filter');
-    var cards   = document.querySelectorAll('.ig-card');
-    filters.forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var cat = btn.dataset.cat;
-        filters.forEach(function (b) { b.classList.remove('is-active'); });
-        btn.classList.add('is-active');
-        cards.forEach(function (c) {
-          c.classList.toggle('is-hidden', cat !== 'all' && c.dataset.category !== cat);
-        });
-      });
-    });
-  })();
-  </script>
+  
 </body>
 </html>
