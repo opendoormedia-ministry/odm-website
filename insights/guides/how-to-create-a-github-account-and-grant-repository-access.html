@@ -60,6 +60,11 @@
     .gp__body h3 { font-size: 18px; color: var(--ink); margin: 1.6em 0 .5em; }
     .gp__body ul, .gp__body ol { margin: 0 0 1.4em 1.6em; }
     .gp__body li { color: var(--taupe); margin-bottom: .5em; }
+    .gp__body li ul, .gp__body li ol { margin: .4em 0 .2em 1.4em; }
+    .gp__body table { width: 100%; border-collapse: collapse; margin: 1.4em 0; font-size: 14px; }
+    .gp__body th, .gp__body td { border: 1px solid var(--hairline); padding: 9px 14px; text-align: left; }
+    .gp__body th { background: var(--panel); font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--ink); }
+    .gp__body td { color: var(--taupe); }
     .gp__body strong { color: var(--ink); }
     .gp__body em { font-style: italic; }
     .gp__body code { background: var(--panel); border-radius: 4px; padding: 1px 6px; font-size: .88em; color: var(--ink); }
@@ -112,24 +117,23 @@
         <p class="gp__byline">Open Door Media · July 24, 2026</p>
       </header>
       <div class="gp__body">
-        <h1>How to Create a GitHub Account and Grant Repository Access</h1>
-<p>This guide walks you through setting up a free GitHub account, creating a repository for your project, and giving your developer admin access to work on it.</p>
+        <p>This guide walks you through setting up a free GitHub account, creating a repository for your project, and giving your developer admin access to work on it.</p>
 <hr>
 <h2>Part 1: Create Your GitHub Account</h2>
-<ol><li>Go to <a href="https://github.com" target="_blank" rel="noopener noreferrer">github.com</a></li><li>Click <strong>Sign up</strong> in the top-right corner.</li><li>Enter the following:</li><li>Complete the verification puzzle if prompted.</li><li>Check your email inbox (<strong>[YOUR EMAIL ADDRESS]</strong>) for a verification code from GitHub, and enter it on the signup page.</li><li>When asked &quot;How many people will be using this account?&quot;, select <strong>Just me</strong>.</li><li>When asked about your GitHub plan, select <strong>Free</strong> — this covers everything needed for this project.</li><li>You can skip any additional setup prompts (personalization surveys, etc.) — just look for a <strong>Skip</strong> link.</li></ol>
+<ol><li>Go to <a href="https://github.com" target="_blank" rel="noopener noreferrer">github.com</a></li><li>Click <strong>Sign up</strong> in the top-right corner.</li><li>Enter the following:<ul><li>Email address: <strong>[YOUR EMAIL ADDRESS]</strong></li><li>Password: <strong>[CREATE A SECURE PASSWORD]</strong></li><li>Username: <strong>[CHOOSE A USERNAME]</strong><ul><li>This will be public and part of your account URL (e.g., <code>github.com/yourusername</code>). Business-related usernames (like your company name) are recommended if this account will manage business projects.</li></ul></li></ul></li><li>Complete the verification puzzle if prompted.</li><li>Check your email inbox (<strong>[YOUR EMAIL ADDRESS]</strong>) for a verification code from GitHub, and enter it on the signup page.</li><li>When asked &quot;How many people will be using this account?&quot;, select <strong>Just me</strong>.</li><li>When asked about your GitHub plan, select <strong>Free</strong> — this covers everything needed for this project.</li><li>You can skip any additional setup prompts (personalization surveys, etc.) — just look for a <strong>Skip</strong> link.</li></ol>
 <p>You now have a GitHub account. Keep your username, email, and password somewhere safe (a password manager is ideal).</p>
 <hr>
 <h2>Part 2: Create a Repository</h2>
 <p>A repository (&quot;repo&quot;) is where your website's code and files will live.</p>
-<ol><li>Once logged in, click the <strong>+</strong> icon in the top-right corner, then select <strong>New repository</strong>.</li><li>Fill in the repository details:</li><li>Leave the &quot;Initialize this repository with&quot; options unchecked unless your developer has told you otherwise.</li><li>Click <strong>Create repository</strong>.</li></ol>
+<ol><li>Once logged in, click the <strong>+</strong> icon in the top-right corner, then select <strong>New repository</strong>.</li><li>Fill in the repository details:<ul><li><strong>Repository name:</strong> <strong>[e.g., yourbusinessname-website]</strong></li><li><strong>Description (optional):</strong> <strong>[SHORT DESCRIPTION OF THE PROJECT]</strong></li><li><strong>Visibility:</strong> Choose <strong>Private</strong> (recommended, so the code isn't publicly visible) unless you have a specific reason to make it public.</li></ul></li><li>Leave the &quot;Initialize this repository with&quot; options unchecked unless your developer has told you otherwise.</li><li>Click <strong>Create repository</strong>.</li></ol>
 <p>Your repository is now created. Its address will look like: <code>github.com/[YOUR USERNAME]/[YOUR REPOSITORY NAME]</code></p>
 <hr>
 <h2>Part 3: Add Your Developer as a Collaborator with Admin Access</h2>
 <p>This step gives your developer the ability to manage the repository on your behalf, while you remain the account owner.</p>
-<ol><li>From your repository page, click <strong>Settings</strong> (top menu bar of the repo, not your account settings).</li><li>In the left sidebar, click <strong>Collaborators</strong> (you may be asked to re-enter your password to confirm).</li><li>Click <strong>Add people</strong>.</li><li>Enter your developer's GitHub username, or email:</li><li>Once they appear in the search results, click their name to select them.</li><li>Choose their permission level: select <strong>Admin</strong>.</li><li>Click <strong>Add [developer's username] to this repository</strong>.</li><li>Your developer will receive an email invitation and must accept it before access is active. Let them know to check their inbox.</li></ol>
+<ol><li>From your repository page, click <strong>Settings</strong> (top menu bar of the repo, not your account settings).</li><li>In the left sidebar, click <strong>Collaborators</strong> (you may be asked to re-enter your password to confirm).</li><li>Click <strong>Add people</strong>.</li><li>Enter your developer's GitHub username, or email:<ul><li>Open Door Media's Username: <strong>open-door-media</strong></li></ul></li><li>Once they appear in the search results, click their name to select them.</li><li>Choose their permission level: select <strong>Admin</strong>.</li><li>Click <strong>Add [developer's username] to this repository</strong>.</li><li>Your developer will receive an email invitation and must accept it before access is active. Let them know to check their inbox.</li></ol>
 <hr>
 <h2>Summary of What You'll Need</h2>
-<p>| Item | Your Info | |---|---| | Email address | <strong>[YOUR EMAIL ADDRESS]</strong> | | GitHub username | <strong>[YOUR USERNAME]</strong> | | Password | <strong>[STORED SECURELY]</strong> | | Repository name | <strong>[YOUR REPOSITORY NAME]</strong> | | Developer's GitHub username/email | <strong>opendoormedia</strong> |</p>
+<table><thead><tr><th>Item</th><th>Your Info</th></tr></thead><tbody><tr><td>Email address</td><td><strong>[YOUR EMAIL ADDRESS]</strong></td></tr><tr><td>GitHub username</td><td><strong>[YOUR USERNAME]</strong></td></tr><tr><td>Password</td><td><strong>[STORED SECURELY]</strong></td></tr><tr><td>Repository name</td><td><strong>[YOUR REPOSITORY NAME]</strong></td></tr><tr><td>Developer's GitHub username/email</td><td><strong>opendoormedia</strong></td></tr></tbody></table>
 <hr>
 <p><em>Questions about this process? Reach out to <strong>[YOUR CONTACT EMAIL / PHONE]</strong> and we'll walk you through it.</em></p>
       </div>
