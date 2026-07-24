@@ -28,20 +28,64 @@ function escHtml(t) {
   return String(t || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+function markup(s) {
+  return s
+    .replace(/\*\*(.+?)\*\*/g,  '<strong>$1</strong>')
+    .replace(/\*([^*\n]+?)\*/g, '<em>$1</em>')
+    .replace(/~~(.+?)~~/g,      '<del>$1</del>')
+    .replace(/`([^`]+)`/g,      '<code>$1</code>');
+}
+
 function inline(text) {
-  return escHtml(text)
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,     '<em>$1</em>')
-    .replace(/`(.+?)`/g,       '<code>$1</code>');
+  // Tokenize images and links BEFORE HTML-escaping so URLs aren't mangled,
+  // then apply markup() to each non-link/image segment.
+  const tokens = [];
+  let last = 0;
+  const re = /(!?)\[([^\]]*)\]\((https?:\/\/[^)]*)\)/g;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) tokens.push({ t: 'text', v: text.slice(last, m.index) });
+    tokens.push(m[1] === '!'
+      ? { t: 'img',  alt: m[2], src:  m[3] }
+      : { t: 'link', label: m[2], href: m[3] });
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) tokens.push({ t: 'text', v: text.slice(last) });
+
+  return tokens.map(tok => {
+    if (tok.t === 'link') return `<a href="${escHtml(tok.href)}" target="_blank" rel="noopener noreferrer">${markup(escHtml(tok.label))}</a>`;
+    if (tok.t === 'img')  return `<img src="${escHtml(tok.src)}" alt="${escHtml(tok.alt)}" loading="lazy">`;
+    return markup(escHtml(tok.v));
+  }).join('');
 }
 
 function mdToHtml(md) {
+  // Pre-extract fenced code blocks before splitting — they may contain blank lines.
+  const codeBlocks = [];
+  md = md.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
+    codeBlocks.push({ lang: lang.trim(), code: code.replace(/\n$/, '') });
+    return `\x00CODE${codeBlocks.length - 1}\x00`;
+  });
+
   return md.trim().split(/\n\n+/).map(block => {
     block = block.trim();
     if (!block) return '';
+
+    // Fenced code block placeholder
+    const cm = block.match(/^\x00CODE(\d+)\x00$/);
+    if (cm) {
+      const { lang, code } = codeBlocks[+cm[1]];
+      const cls = lang ? ` class="language-${escHtml(lang)}"` : '';
+      return `<pre><code${cls}>${escHtml(code)}</code></pre>`;
+    }
+
+    // Horizontal rule
+    if (/^[-*_]{3,}$/.test(block)) return '<hr>';
+
     if (/^### /.test(block)) return `<h3>${inline(block.slice(4))}</h3>`;
     if (/^## /.test(block))  return `<h2>${inline(block.slice(3))}</h2>`;
     if (/^# /.test(block))   return `<h1>${inline(block.slice(2))}</h1>`;
+
     if (/^> /.test(block)) {
       const inner = block.split('\n').map(l => inline(l.replace(/^> ?/, ''))).join('<br>');
       return `<blockquote>${inner}</blockquote>`;
