@@ -278,9 +278,11 @@ function guidePageHtml(meta, bodyHtml, slug) {
     .gp__body p  { color: var(--taupe); margin-bottom: 1.4em; }
     .gp__body h2 { font-size: 22px; color: var(--ink); margin: 2em 0 .6em; }
     .gp__body h3 { font-size: 18px; color: var(--ink); margin: 1.6em 0 .5em; }
-    .gp__body ul, .gp__body ol { margin: 0 0 1.4em 1.6em; }
+    .gp__body ul { list-style-type: disc;    margin: 0 0 1.4em 1.6em; }
+    .gp__body ol { list-style-type: decimal; margin: 0 0 1.4em 1.6em; }
     .gp__body li { color: var(--taupe); margin-bottom: .5em; }
-    .gp__body li ul, .gp__body li ol { margin: .4em 0 .2em 1.4em; }
+    .gp__body li ul { list-style-type: circle;      margin: .4em 0 .2em 1.4em; }
+    .gp__body li ol { list-style-type: lower-alpha; margin: .4em 0 .2em 1.4em; }
     .gp__body table { width: 100%; border-collapse: collapse; margin: 1.4em 0; font-size: 14px; }
     .gp__body th, .gp__body td { border: 1px solid var(--hairline); padding: 9px 14px; text-align: left; }
     .gp__body th { background: var(--panel); font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--ink); }
