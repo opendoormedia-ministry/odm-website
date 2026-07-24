@@ -59,4 +59,4 @@ This gives your developer full access to manage your Cloudflare account — incl
 
 ---
 
-*Questions about this process? Reach out to `YOUR CONTACT EMAIL / PHONE` and we'll walk you through it.*
+*Questions about this process? Reach out to `connect@opendoormedia.us / 316-285-0517` and we'll walk you through it.*
