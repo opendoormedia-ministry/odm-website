@@ -3,7 +3,7 @@ title: How to Create a Cloudflare Account and Grant Account Access
 author: Open Door Media
 date: 2026-07-24
 category: Cloudflare
-published: true
+published: false
 ---
 
 This guide walks you through creating a free Cloudflare account and adding your developer as a member so they can manage your site.
