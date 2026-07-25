@@ -995,6 +995,7 @@
       author:    document.getElementById('ef-author').value.trim(),
       date:      document.getElementById('ef-date').value.trim(),
       category:  document.getElementById('ef-cat').value.trim(),
+      format:    'html',
       published: publish ? 'true' : (S.currentPost && S.currentPost.meta.published === 'true' && publish !== false ? 'true' : 'false'),
     };
     if (publish === true)  meta.published = 'true';
