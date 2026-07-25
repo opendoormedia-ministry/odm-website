@@ -2,7 +2,7 @@
 title: How to Create a Cloudflare Account and Grant Account Access
 author: Open Door Media
 date: 2026-07-24
-category: Cloudflare
+category: Websites
 format: html
 published: true
 ---
