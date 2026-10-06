@@ -527,6 +527,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         headers: { 'Accept': 'application/json' },
         body:    new FormData(form)
       }).then(function (res) {
+        if (res.ok) {
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'form_submission', form_id: 'contact' });
+        }
         var msg = res.ok
           ? 'Thanks, ' + firstName() + '! We\'ll review this and reply within a couple of days with honest next steps.'
           : 'Hmm — something went wrong. Could you email us directly at connect@opendoormedia.us?';
