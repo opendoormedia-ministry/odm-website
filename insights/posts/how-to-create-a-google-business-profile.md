@@ -25,12 +25,7 @@ published: true
 <p>Once verified (or while you wait), fill in as much detail as possible. A complete profile ranks better and earns more trust.</p>
 <ul><li><strong>Business hours</strong> — including any special holiday hours</li><li><strong>Description</strong> — a brief summary of what you do and who you serve (750 characters max)</li><li><strong>Photos</strong> — a logo, a cover photo, and images of your space, team, or work</li><li><strong>Services or products</strong> — list what you offer</li><li><strong>Attributes</strong> — things like "wheelchair accessible," "veteran-owned," "nonprofit," etc.</li></ul>
 <hr>
-<h2>Part 5: Add Open Door Media as a Manager</h2>
-<p>If you'd like us to manage or update your profile on your behalf, you can add us as a manager. You stay the owner — we just get access to make edits.</p>
-<ol><li>Go to <a href="https://business.google.com" target="_blank" rel="noopener noreferrer">business.google.com</a> and select your business.</li><li>In the left menu, click <strong>Business Profile settings</strong>.</li><li>Click <strong>Managers</strong>.</li><li>Click <strong>Add</strong> (the person-with-a-plus icon).</li><li>Enter our Google account email: <strong>project@opendoormedia.us</strong></li><li>Under <strong>Access</strong>, choose <strong>Manager</strong> (we recommend this over "Owner" — you retain full ownership).</li><li>Click <strong>Invite</strong>. We'll receive a notification and accept from our end.</li></ol>
-<blockquote><strong>Note:</strong> The invitation is sent to our Google account. Let us know once you've sent it so we know to look for it.</blockquote>
-<hr>
 <h2>Quick Reference</h2>
-<table><thead><tr><th>Item</th><th>Your Info</th></tr></thead><tbody><tr><td>Google account email used</td><td><strong>[YOUR EMAIL ADDRESS]</strong></td></tr><tr><td>Business name on Google</td><td><strong>[YOUR BUSINESS NAME]</strong></td></tr><tr><td>Verification method chosen</td><td><strong>[POSTCARD / PHONE / EMAIL / VIDEO]</strong></td></tr><tr><td>Open Door Media's Google email</td><td><strong>project@opendoormedia.us</strong></td></tr></tbody></table>
+<table><thead><tr><th>Item</th><th>Your Info</th></tr></thead><tbody><tr><td>Google account email used</td><td><strong>[YOUR EMAIL ADDRESS]</strong></td></tr><tr><td>Business name on Google</td><td><strong>[YOUR BUSINESS NAME]</strong></td></tr><tr><td>Verification method chosen</td><td><strong>[POSTCARD / PHONE / EMAIL / VIDEO]</strong></td></tr></tbody></table>
 <hr>
 <p><em>Questions about this process? Reach out to <strong>help@opendoormedia.us</strong> and we'll walk you through it.</em></p>
